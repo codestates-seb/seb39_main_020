@@ -3,10 +3,10 @@
 
 ### Main Project
 
->### 프로젝트 일정
+>##### 프로젝트 일정
 > * 2022.09.08 ~ 2022.10.12
 
-> ### 프로젝트 문서
+> ##### 프로젝트 문서
 > 
 >  * 프로젝트 기획 문서
 >    * 기획서: [Google Docs](https://docs.google.com/document/d/19Djmc8gDV4m65l9ClzTM0hlW_90169S1g73HFR5zTK0/edit)
