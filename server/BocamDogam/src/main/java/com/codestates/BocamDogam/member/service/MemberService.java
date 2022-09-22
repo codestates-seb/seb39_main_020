@@ -23,5 +23,5 @@ public interface MemberService {
     Member findVerifiedMember(Long memberId);
 
     // 등록 회원 검증
-    void verifyExistMember(Long memberId);
+    void verifyExistEmail(String Email);
 }

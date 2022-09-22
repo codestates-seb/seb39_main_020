@@ -28,7 +28,7 @@ public class Member {
     @Column(nullable = false)
     private MemberRoles roles = MemberRoles.USER;
 
-    // TODO: 인증 시 수료한 학원 정보 등록 필요
+    // TODO: 인증 시 수료한 학원 정보 등록 필요?
     // private String instituteId;
 
     @Column

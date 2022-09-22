@@ -18,7 +18,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 회원 등록
     public Member createMember(Member member) {
-        verifyExistMember(member.getMemberId());
+        verifyExistEmail(member.getEmail());
 
         return memberRepository.save(member);
     }
@@ -57,8 +57,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 등록 회원 검증
-    public void verifyExistMember(Long memberId) {
-        Optional<Member> verifyMember = memberRepository.findById(memberId);
+    public void verifyExistEmail(String email) {
+        Optional<Member> verifyMember = memberRepository.findByEmail(email);
         if(verifyMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
     }

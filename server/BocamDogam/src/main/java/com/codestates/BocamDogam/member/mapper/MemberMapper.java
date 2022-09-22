@@ -1,4 +1,4 @@
-package com.codestates.BocamDogam.member.dto.mapper;
+package com.codestates.BocamDogam.member.mapper;
 
 import com.codestates.BocamDogam.member.dto.MemberPatchDto;
 import com.codestates.BocamDogam.member.dto.MemberPostDto;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MemberMapper {
-    Member memberPostToMember(MemberPostDto requestBody);
-    Member memberPatchToMember(MemberPatchDto requestBody);
+    Member memberPostToMember(MemberPostDto memberPostDto);
+    Member memberPatchToMember(MemberPatchDto memberPatchDto);
     MemberResponseDto memberToMemberResponse(Member member);
 }

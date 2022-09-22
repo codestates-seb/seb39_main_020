@@ -1,13 +1,11 @@
 package com.codestates.BocamDogam.member.controller;
 
 import com.codestates.BocamDogam.member.dto.MemberPostDto;
-import com.codestates.BocamDogam.member.dto.MemberResponseDto;
-import com.codestates.BocamDogam.member.dto.mapper.MemberMapper;
+import com.codestates.BocamDogam.member.mapper.MemberMapper;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,7 +24,7 @@ public class MemberController {
     
     // 회원 생성 요청
     @PostMapping
-    public ResponseEntity postMember(@Validated @RequestBody MemberPostDto memberPostDto) {
+    public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
         Member member = memberMapper.memberPostToMember(memberPostDto);
         Member response = memberService.createMember(member);
 
@@ -34,6 +32,7 @@ public class MemberController {
     }
 
     // 회원 조회 요청
+    // 일단은 필요 없을 수 있음
     @GetMapping("/{member-id}")
     public ResponseEntity getUser(@PathVariable("member-id") @Positive Long memberId) {
         Member response = memberService.findMember(memberId);
