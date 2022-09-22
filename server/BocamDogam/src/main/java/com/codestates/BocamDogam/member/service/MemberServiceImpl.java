@@ -46,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.delete(member);
     }
 
-    // 회원 확인
+    // 회원 검증
     public Member findVerifiedMember(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
 
