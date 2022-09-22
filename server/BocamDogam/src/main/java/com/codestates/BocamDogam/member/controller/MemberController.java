@@ -21,10 +21,11 @@ public class MemberController {
 
     public MemberController(MemberService memberService, MemberMapper memberMapper) {
         this.memberService = memberService;
-        this.memberMapper =memberMapper;
+        this.memberMapper = memberMapper;
     }
-
+    
     // 회원 생성 요청
+    @PostMapping
     public ResponseEntity postMember(@Validated @RequestBody MemberPostDto memberPostDto) {
         Member member = memberMapper.memberPostToMember(memberPostDto);
         Member response = memberService.createMember(member);
@@ -47,7 +48,7 @@ public class MemberController {
 
 
     // 회원 삭제 요청
-    @GetMapping("/members/{member-id}")
+    @DeleteMapping("/members/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId) {
         memberService.deleteMember(memberId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
