@@ -1,7 +1,0 @@
-mail:
-  address:
-    admin: admin@gmail.com
-jwt:
-  secret-key: bootcamp-dogam-secret-long-long-key
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
