@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,9 +26,12 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
-    private MemberRoles roles = MemberRoles.USER;
+//    @Enumerated(value = EnumType.STRING)
+//    @Column(nullable = false)
+//    private MemberRoles roles = MemberRoles.USER;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     // TODO: 인증 시 수료한 학원 정보 등록 필요?
     // private String instituteId;
