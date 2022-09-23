@@ -1,26 +1,41 @@
 package com.codestates.BocamDogam.member.service;
 
+import com.codestates.BocamDogam.auth.utils.CustomAuthorityUtils;
 import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.repository.MemberRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomAuthorityUtils authorityUtils;
 
-    public MemberServiceImpl(MemberRepository memberRepository) {
+    public MemberServiceImpl(MemberRepository memberRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
         this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityUtils = authorityUtils;
     }
 
     // 회원 등록
     public Member createMember(Member member) {
         verifyExistEmail(member.getEmail());
 
-        return memberRepository.save(member);
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
+        Member savedMember = memberRepository.save(member);
+
+        return savedMember;
     }
 
     // 단일 회원 정보 조회
