@@ -2,6 +2,7 @@ package com.codestates.BocamDogam.institute.service;
 
 import com.codestates.BocamDogam.institute.entity.Institute;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 public interface InstituteService {
     // 교육기관 등록
