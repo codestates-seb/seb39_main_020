@@ -41,7 +41,23 @@ public class InstituteServiceImpl implements InstituteService {
     }
 
     @Override
-    public void deleteMember(Long instituteId) {
+    public Institute updateInstitute(Institute institute) {
+        Institute findInstitute = findVerifiedInstitute(institute.getInstituteId());
+
+        Optional.ofNullable(institute.getName())
+                .ifPresent(name -> findInstitute.setName(name));
+        Optional.ofNullable(institute.getDescription())
+                .ifPresent(description -> findInstitute.setDescription(description));
+        Optional.ofNullable(institute.getHomepage())
+                .ifPresent(homepage -> findInstitute.setHomepage(homepage));
+        Optional.ofNullable(institute.getLocation())
+                .ifPresent(location -> findInstitute.setLocation(location));
+
+        return instituteRepository.save(findInstitute);
+    }
+
+    @Override
+    public void deleteInstitute(Long instituteId) {
         Institute findInstitute =  findVerifiedInstitute(instituteId);
         instituteRepository.delete(findInstitute);
     }

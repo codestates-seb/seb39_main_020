@@ -14,10 +14,10 @@ public interface InstituteService {
     Page<Institute> findInstitutes(int page, int size);
 
     // 교육기관 정보 수정
-    // Member updateMember(Institute institute);
+    Institute updateInstitute(Institute institute);
 
     // 교육기관 삭제
-    void deleteMember(Long instituteId);
+    void deleteInstitute(Long instituteId);
 
     // 교육기관 검증
     Institute findVerifiedInstitute(Long InstituteId);

@@ -8,18 +8,27 @@ public class InstituteDto {
     @Getter
     @Setter
     public static class Post {
-
+        private String name;
     }
 
     @Getter
     @Setter
     public static class Patch {
-
+        private Long instituteId;
+        private String name;
+        private String description;
+        private String homepage;
+        private String location;
     }
 
     @Getter
     @Setter
     public static class Response {
-
+        private Long instituteId;
+        private String name;
+        private String description;
+        private String homepage;
+        private String location;
+        private Double score;
     }
 }

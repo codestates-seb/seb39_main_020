@@ -10,4 +10,6 @@ public interface InstituteMapper {
     Institute institutePostToInstitute(InstituteDto.Post requestBody);
     Institute institutePatchToInstitute(InstituteDto.Patch requestBody);
     InstituteDto.Response instituteToInstituteResponse(Institute institute);
+
+    // 멀티리스폰스용 매퍼 제작 필요
 }
