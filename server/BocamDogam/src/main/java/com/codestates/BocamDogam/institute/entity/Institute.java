@@ -32,6 +32,7 @@ public class Institute {
      *   해당 교육기관 리뷰에 있는 종합 평점의 평균을 사용할 예정
      *   어떻게 구현할지 고민 -> 서비스 단에서 구현
      */
+
     @Column
     private Double score;
 

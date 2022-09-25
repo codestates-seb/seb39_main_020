@@ -4,6 +4,7 @@ import com.codestates.BocamDogam.member.entity.MemberRoles;
 import lombok.Getter;
 import lombok.Setter;
 
+// DTO 클래스 간편화를 위해 생성
 public class MemberDto {
     @Getter
     @Setter

@@ -7,7 +7,13 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
 
     INSTITUTE_NOT_FOUND(404, "Institute not found"),
-    INSTITUTE_EXISTS(409, "Institute exists");
+    INSTITUTE_EXISTS(409, "Institute exists"),
+
+    REVIEW_NOT_FOUND(404, "Review not found"),
+    REVIEW_EXISTS(409, "Review exists"),
+
+    COURSE_NOT_FOUND(404, "Course not found"),
+    COURSE_EXISTS(409, "Course exists");
 
     @Getter
     private final int statusCode;
