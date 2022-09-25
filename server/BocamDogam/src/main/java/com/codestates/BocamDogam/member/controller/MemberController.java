@@ -28,7 +28,9 @@ public class MemberController {
         Member member = memberMapper.memberPostToMember(memberPostDto);
         Member response = memberService.createMember(member);
 
-        return new ResponseEntity<>(memberMapper.memberToMemberResponse(response), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                memberMapper.memberToMemberResponse(response),
+                HttpStatus.CREATED);
     }
 
     // 회원 조회 요청
@@ -37,7 +39,9 @@ public class MemberController {
     public ResponseEntity getUser(@PathVariable("member-id") @Positive Long memberId) {
         Member response = memberService.findMember(memberId);
 
-        return new ResponseEntity<>(memberMapper.memberToMemberResponse(response), HttpStatus.OK);
+        return new ResponseEntity<>(
+                memberMapper.memberToMemberResponse(response),
+                HttpStatus.OK);
     }
 
     // TODO: 모든 회원 정보 조회 요청
@@ -50,6 +54,7 @@ public class MemberController {
     @DeleteMapping("/members/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId) {
         memberService.deleteMember(memberId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                HttpStatus.NO_CONTENT);
     }
 }
