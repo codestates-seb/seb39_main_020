@@ -14,10 +14,4 @@ public class MemberResponseDto {
     private Long memberId;
     private String nickname;
     private String email;
-    private MemberRoles roles;
-    private boolean status;
-
-    public String getRoles() {
-        return roles.getRoles();
-    }
 }

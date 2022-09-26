@@ -189,7 +189,9 @@ sketch
 
 # Environment Variable
 .env
-application.properties
+*.properties
+*.yml
+*.yaml
 
 # End of 
 https://www.toptal.com/developers/gitignore/api/java,intellij,react,visualstudiocode

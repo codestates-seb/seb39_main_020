@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 @RestController
-@RequestMapping("/main/members")
 public class MemberController {
     private final MemberService memberService;
     private final MemberMapper memberMapper;
@@ -21,23 +20,32 @@ public class MemberController {
         this.memberService = memberService;
         this.memberMapper = memberMapper;
     }
-    
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     // 회원 생성 요청
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
         Member member = memberMapper.memberPostToMember(memberPostDto);
         Member response = memberService.createMember(member);
 
+        System.out.println(member.getRoles().toString());
+        
         return new ResponseEntity<>(memberMapper.memberToMemberResponse(response), HttpStatus.CREATED);
     }
 
     // 회원 조회 요청
     // 일단은 필요 없을 수 있음
-    @GetMapping("/{member-id}")
+    @GetMapping("/main/members/{member-id}")
     public ResponseEntity getUser(@PathVariable("member-id") @Positive Long memberId) {
         Member response = memberService.findMember(memberId);
 
-        return new ResponseEntity<>(memberMapper.memberToMemberResponse(response), HttpStatus.OK);
+        return new ResponseEntity<>(
+                memberMapper.memberToMemberResponse(response),
+                HttpStatus.OK);
     }
 
     // TODO: 모든 회원 정보 조회 요청
@@ -47,9 +55,10 @@ public class MemberController {
 
 
     // 회원 삭제 요청
-    @DeleteMapping("/members/{member-id}")
+    @DeleteMapping("/main/members/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId) {
         memberService.deleteMember(memberId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(
+                HttpStatus.NO_CONTENT);
     }
 }
