@@ -1,5 +1,12 @@
-import React, { useState } from 'react'
-import { Routes, Route } from "react-router-dom";
+import logo from './logo.svg';
+import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
+import React, { useState, Fragment } from 'react'
 
 import Heading from './Component/Heading';
 import Institutes from './Component/Post/Institutes';
@@ -11,15 +18,19 @@ import Qna from './Component/Post/Qna';
 import Login from './Component/User/Login';
 import Register from './Component/User/Register';
 
+const Home = ()=>{
+  return (<div>Home</div>)
+}
+
 function App() {
   const [ContentList, setContentList] = useState([]);
 
   return (
-    <>
-      <Heading />
-      <Routes>
-
-      <Route
+    <Router>
+        <Heading/>
+        <Routes> 
+          <Route path="/" element={<Home/>}/>
+          <Route
           path="/institutes"
           element={
             <Institutes ContentList = {ContentList} setContentList={setContentList} />} />
@@ -48,8 +59,8 @@ function App() {
         <Route path="/login" element={<Login/>} />
 
         <Route path="/register" element={<Register/>} />
-      </Routes>
-    </>
+        </Routes>
+    </Router>
   );
 }
 
