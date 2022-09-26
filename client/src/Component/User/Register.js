@@ -20,6 +20,16 @@ function Register() {
       }
 
       useEffect(()=> {
+        axios.get('/register', 
+        {headers: {'Content-type': 'application/json', 'Accept': 'application/json'}})
+        .then((response) => {
+          console.log(response.data)
+          console.log('register success!register success!register success!register success!register success!register success!register success!register success!register success!register success!')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+
         axios.post('/register', 
         body, {headers: {'Content-type': 'application/json', 'Accept': 'application/json'}})
         .then((response) => {
