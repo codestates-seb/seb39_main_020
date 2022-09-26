@@ -10,3 +10,4 @@ public class BocamDogamApplication {
 		SpringApplication.run(BocamDogamApplication.class, args);
 	}
 }
+
