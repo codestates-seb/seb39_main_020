@@ -1,4 +1,4 @@
-//package com.codestates.BocamDogam.course.service;
-//
-//public class CourseServiceImpl implements CourseService {
-//}
+package com.codestates.BocamDogam.course.service;
+
+public class CourseServiceImpl implements CourseService {
+}
