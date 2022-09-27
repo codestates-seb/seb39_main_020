@@ -26,15 +26,20 @@ public class MemberController {
         return "login";
     }
 
-    // 회원 생성 요청
+     // 회원 생성 요청
     @PostMapping("/register")
     public ResponseEntity postMember(@Valid @RequestBody MemberPostDto memberPostDto) {
         Member member = memberMapper.memberPostToMember(memberPostDto);
         Member response = memberService.createMember(member);
 
         System.out.println(member.getRoles().toString());
-        
+
         return new ResponseEntity<>(memberMapper.memberToMemberResponse(response), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/register")
+    public String register(MemberPostDto memberPostDto) {
+        return "register";
     }
 
     // 회원 조회 요청
