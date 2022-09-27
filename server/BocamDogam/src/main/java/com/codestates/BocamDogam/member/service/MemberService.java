@@ -1,6 +1,7 @@
 package com.codestates.BocamDogam.member.service;
 
 import com.codestates.BocamDogam.member.entity.Member;
+import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
@@ -11,7 +12,8 @@ public interface MemberService {
     // 단일 회원 정보 조회
     Member findMember(Long memberId);
 
-    // TODO: 모든 회원 조회
+    // 모든 회원 조회
+    Page<Member> findMembers(int page, int size);
 
     // 회원 정보 수정
     Member updateMember(Member member);
