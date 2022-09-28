@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   function registerUser() {
     const body = {
@@ -17,25 +17,8 @@ function Register() {
     console.log(PW);
     console.log(PWConfirm);
 
-    // axios
-    //   .get("/register", {
-    //     headers: {
-    //       "Content-type": "application/json",
-    //       Accept: "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     console.log(
-    //       "register success!register success!register success!register success!register success!register success!register success!register success!register success!register success!"
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-
     axios
-      .post("/register", body, {
+      .post("http://localhost:8080/register", body, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -44,6 +27,7 @@ function Register() {
       .then((response) => {
         console.log(response.data);
         console.log("success!");
+        navigate("/login");
       })
       .catch((error) => {
         console.log(error);

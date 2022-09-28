@@ -4,6 +4,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   function greetUser() {
     const body = {
       email: Email,
@@ -14,7 +16,7 @@ function Login() {
     console.log(PW);
 
     axios
-      .post("/login", body, {
+      .post("http://localhost:8080/login", body, {
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
@@ -22,6 +24,8 @@ function Login() {
       })
       .then((response) => {
         console.log(response.data);
+        console.log("success!");
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -29,8 +33,6 @@ function Login() {
   }
   const [Email, setEmail] = useState("");
   const [PW, setPW] = useState("");
-
-  const navigate = useNavigate();
 
   // useEffect (() => {
 
