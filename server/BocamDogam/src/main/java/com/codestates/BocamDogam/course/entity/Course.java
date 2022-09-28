@@ -40,10 +40,10 @@ public class Course {
     private LocalDateTime applyEnd;
 
     @Column
-    private LocalDate StartDate;
+    private LocalDateTime StartDate;
 
     @Column
-    private LocalDate EndDate;
+    private LocalDateTime EndDate;
 
     // 수강 기간
     // EndDate - StartDate
@@ -55,6 +55,8 @@ public class Course {
     private int scale;
 
     // 수강 비용
+    // 단위는 원
+    // 후불제이거나 연봉의 x% 같은 경우는?
     @Column
     private int cost;
 

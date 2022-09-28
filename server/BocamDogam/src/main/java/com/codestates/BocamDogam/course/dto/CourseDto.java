@@ -6,6 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class CourseDto {
     @Getter
     @Setter
@@ -13,17 +17,52 @@ public class CourseDto {
         private Institute institute;
         private String name;
         private CourseCategory category;
+        private LocalDateTime applyStart;
+        private LocalDateTime applyEnd;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private boolean supports;
+        private boolean remote;
+        private int scale;
+        private int cost;
     }
 
     @Getter
     @Setter
     public static class Patch {
-
+        private Long courseId;
+        private String name;
+        private String description;
+        private CourseCategory category;
+        private String lecturer;
+        private LocalDateTime applyStart;
+        private LocalDateTime applyEnd;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private boolean supports;
+        private boolean remote;
+        private int scale;
+        private int cost;
     }
 
     @Getter
     @Setter
     public static class Response {
-
+        private Long courseId;
+        private Institute institute;
+        private String name;
+        private String description;
+        private CourseCategory category;
+        private String lecturer;
+        private LocalDateTime applyStart;
+        private LocalDateTime applyEnd;
+        private LocalDate StartDate;
+        private LocalDate EndDate;
+        private int period;
+        private int scale;
+        private int cost;
+        private boolean support;
+        private boolean remote;
+        private String ApplyStatus;
     }
 }
