@@ -11,6 +11,8 @@ public interface MemberService {
     // 단일 회원 정보 조회
     Member findMember(Long memberId);
 
+    Member findMemberByEmail(String email);
+
     // TODO: 모든 회원 조회
 
     // 회원 정보 수정

@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -34,6 +35,8 @@ public class JwtTokenizer {
 
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
+//        return Encoders.BASE64URL.encode(secretKey.getBytes(StandardCharsets.UTF_8));
+//        return Base64Utils.encodeToUrlSafeString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateAccessToken(Map<String, Object> claims,
@@ -93,4 +96,7 @@ public class JwtTokenizer {
         Date expiration = calendar.getTime();
         return expiration;
     }
+
+
+
 }
