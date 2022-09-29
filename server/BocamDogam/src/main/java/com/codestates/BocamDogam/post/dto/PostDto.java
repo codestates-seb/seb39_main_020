@@ -22,7 +22,6 @@ public class PostDto {
         private Board board;
         private String title;
         private String content;
-
     }
 
     @Getter
