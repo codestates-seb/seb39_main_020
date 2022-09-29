@@ -8,6 +8,8 @@ import com.codestates.BocamDogam.member.repository.MemberRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +69,14 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMember(Long memberId) {
         Member member = findVerifiedMember(memberId);
         memberRepository.delete(member);
+    }
+
+    // 이메일로 회원 확인
+    public Member findMemberByEmail(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member member = findMember.get();
+
+        return member;
     }
 
     // 회원 검증

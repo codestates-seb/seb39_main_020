@@ -20,7 +20,10 @@ public interface MemberService {
 
     // 회원 탈퇴
     void deleteMember(Long memberId);
-
+    
+    // 이메일로 회원 확인
+    Member findMemberByEmail(String email);
+    
     // 회원 검증
     Member findVerifiedMember(Long memberId);
 
