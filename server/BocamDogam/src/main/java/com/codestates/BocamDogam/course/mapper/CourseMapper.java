@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CourseMapper {
     Course coursePostToCourse(CourseDto.Post requestBody);
-    Course CoursePatchToCourse(CourseDto.Patch requestBody);
+    Course coursePatchToCourse(CourseDto.Patch requestBody);
     CourseDto.Response courseToCourseResponse(Course course);
     List<CourseDto.Response> coursesToCourseResponse(List<Course> courses);
 }

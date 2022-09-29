@@ -67,7 +67,7 @@ public class MemberController {
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(
-                        memberMapper.membersToMemberResponse(members), pageMembers),
+                        memberMapper.membersToMemberResponses(members), pageMembers),
                 HttpStatus.OK);
     }
 

@@ -19,8 +19,8 @@ public class CourseDto {
         private CourseCategory category;
         private LocalDateTime applyStart;
         private LocalDateTime applyEnd;
-        private LocalDate startDate;
-        private LocalDate endDate;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
         private boolean supports;
         private boolean remote;
         private int scale;
@@ -37,8 +37,8 @@ public class CourseDto {
         private String lecturer;
         private LocalDateTime applyStart;
         private LocalDateTime applyEnd;
-        private LocalDate startDate;
-        private LocalDate endDate;
+        private LocalDateTime startDate;
+        private LocalDateTime endDate;
         private boolean supports;
         private boolean remote;
         private int scale;
@@ -56,8 +56,8 @@ public class CourseDto {
         private String lecturer;
         private LocalDateTime applyStart;
         private LocalDateTime applyEnd;
-        private LocalDate StartDate;
-        private LocalDate EndDate;
+        private LocalDateTime StartDate;
+        private LocalDateTime EndDate;
         private int period;
         private int scale;
         private int cost;

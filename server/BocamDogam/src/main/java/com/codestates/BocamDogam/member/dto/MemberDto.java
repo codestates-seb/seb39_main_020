@@ -31,11 +31,13 @@ public class MemberDto {
         private Long memberId;
         private String nickname;
         private String email;
-        private MemberRoles roles;
+        // private MemberRoles roles;
         private boolean status;
 
+        /*
         public String getRoles() {
             return roles.getRoles();
         }
+        */
     }
 }
