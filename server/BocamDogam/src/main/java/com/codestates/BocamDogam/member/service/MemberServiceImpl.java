@@ -5,6 +5,8 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.repository.MemberRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,12 @@ public class MemberServiceImpl implements MemberService {
         return findVerifiedMember(memberId);
     }
 
+    public Member findMemberByEmail(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member member = findMember.get();
+
+        return member;
+    }
     // TODO: 모든 회원 조회
 
     // 회원 정보 수정
