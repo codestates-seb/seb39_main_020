@@ -34,6 +34,7 @@ public class Member {
     private List<String> roles = new ArrayList<>();
 
     // TODO: 인증 시 수료한 학원 정보 등록 필요?
+    // @OneToOne?
     // private String instituteId;
 
     @Column

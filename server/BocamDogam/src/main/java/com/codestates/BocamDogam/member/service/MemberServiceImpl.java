@@ -5,6 +5,7 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.repository.MemberRepository;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +45,12 @@ public class MemberServiceImpl implements MemberService {
         return findVerifiedMember(memberId);
     }
 
-    public Member findMemberByEmail(String email) {
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-        Member member = findMember.get();
-
-        return member;
+    // 모든 회원 정보 조회
+    @Override
+    public Page<Member> findMembers(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size,
+                Sort.by("memberId").descending()));
     }
-    // TODO: 모든 회원 조회
 
     // 회원 정보 수정
     public Member updateMember(Member member) {
@@ -66,6 +66,14 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMember(Long memberId) {
         Member member = findVerifiedMember(memberId);
         memberRepository.delete(member);
+    }
+
+    // 이메일로 회원 확인
+    public Member findMemberByEmail(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member member = findMember.get();
+
+        return member;
     }
 
     // 회원 검증
