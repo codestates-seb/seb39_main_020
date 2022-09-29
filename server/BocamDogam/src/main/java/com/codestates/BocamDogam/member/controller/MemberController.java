@@ -27,6 +27,10 @@ public class MemberController {
         this.memberMapper = memberMapper;
     }
 
+    @GetMapping("/jwtTest")
+    public String jwtTest(@RequestHeader("Authorization") String token) {
+        return "you've got token. token : " + token;
+    }
     @GetMapping("/login")
     public String login() {
         return "login";

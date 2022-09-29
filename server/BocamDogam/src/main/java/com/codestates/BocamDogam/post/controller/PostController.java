@@ -70,14 +70,30 @@ public class PostController {
     // 게시글 수정
     @PatchMapping("/{board}/{post-id}")
     public ResponseEntity patchPost(@PathVariable("board") Post.Board board,
+                                    @RequestHeader(value = "Authorization") String token,
                                     @PathVariable("post-id") @Positive Long postId,
                                     @RequestBody PostDto.Patch requestBody) {
+        Post post = postService.findPost(postId);
+
+        System.out.println(":::::::::::::::::::::::::::::::::::::::");
+        System.out.println(post.getPostId());
+        System.out.println(post.getTitle());
+        System.out.println(post.getMember().getNickname());
+        System.out.println(":::::::::::::::::::::::::::::::::::::::");
+
+        Long writerId = post.getMember().getMemberId();
+
+        System.out.println(writerId);
+        System.out.println(":::::::::::::::::::::::::::::::::::::::");
+
+        memberService.verifyWriterMember(token, writerId);
+
         requestBody.setPostId(postId);
-        Post post = postService.updatePost(
+        Post patchedPost = postService.updatePost(
                 postMapper.postPatchToPost(requestBody)
         );
 
-        return new ResponseEntity<>(postMapper.postToPostResponse(post),
+        return new ResponseEntity<>(postMapper.postToPostResponse(patchedPost),
                 HttpStatus.CREATED);
     }
 
@@ -103,9 +119,11 @@ public class PostController {
     }
     // 게시글 전체 조회
     @GetMapping("/{board}")
-    public ResponseEntity getPosts(@Positive @RequestParam int page,
+    public ResponseEntity getPosts(@PathVariable("board") Post.Board board,
+                                   @Positive @RequestParam int page,
                                    @Positive @RequestParam int size) {
-        Page<Post> pagePosts = postService.findPosts(page - 1, size);
+        String boardName = board.toString();
+        Page<Post> pagePosts = postService.findPosts(page - 1, size, boardName);
         List<Post> posts = pagePosts.getContent();
 
         return new ResponseEntity<>(
@@ -117,7 +135,10 @@ public class PostController {
     // 게시글 삭제
     @DeleteMapping("/{board}/{post-id}")
     public ResponseEntity deletePost(@PathVariable("board") Post.Board board,
-                                    @PathVariable("post-id") @Positive Long postId) {
+                                    @PathVariable("post-id") @Positive Long postId,
+                                    @RequestHeader(value = "Authorization") String token) {
+        memberService.verifyWriterMember(token, postService.findVerifiedPost(postId).getMember().getMemberId());
+
         postService.deletePost(postId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -5,14 +5,11 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.repository.MemberRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,5 +91,24 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> verifyMember = memberRepository.findByEmail(email);
         if(verifyMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+    public void verifyWriterMember(String token, Long memberId) {
+        Base64.Decoder decoder = Base64.getDecoder();
+        String[] splitJwt = token.split("\\.");
+        String payload = new String(decoder.decode(splitJwt[1]
+                .replace("-", "+")
+                .replace ("_", "/")));
+
+        String email = new String(payload.substring(payload.indexOf("email") + 8, payload.indexOf("com")+3));
+        System.out.println(email);
+
+        Long requestMemberId = findMemberByEmail(email).getMemberId();
+
+        if (requestMemberId != memberId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
+
+
     }
 }

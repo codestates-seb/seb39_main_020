@@ -7,7 +7,9 @@ import com.codestates.BocamDogam.post.entity.Post;
 import com.codestates.BocamDogam.post.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,10 +18,9 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final MemberDetailsService memberDetailsService;
-    public PostServiceImpl(PostRepository postRepository, MemberDetailsService memberDetailsService) {
+
+    public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.memberDetailsService = memberDetailsService;
     }
     @Override
     public Post createPost(Post post) {
@@ -47,10 +48,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<Post> findPosts(int page, int size) {
-
-        return postRepository.findAll(PageRequest.of(page, size,
-                Sort.by("postId").descending()));
+    public Page<Post> findPosts(int page, int size, String boardName) {
+        Pageable pageable = PageRequest.of(page, size,
+                Sort.Direction.DESC, "board");
+        if(boardName == "ALL") return postRepository.findAll(pageable);
+        return postRepository.findByBoard(boardName, pageable);
     }
 
     @Override
