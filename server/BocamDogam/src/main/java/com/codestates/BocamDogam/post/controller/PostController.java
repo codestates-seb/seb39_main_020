@@ -1,7 +1,5 @@
 package com.codestates.BocamDogam.post.controller;
 
-import com.codestates.BocamDogam.auth.JwtTokenizer;
-import com.codestates.BocamDogam.auth.userdetails.MemberDetailsService;
 import com.codestates.BocamDogam.dto.MultiResponseDto;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.service.MemberService;
@@ -10,31 +8,20 @@ import com.codestates.BocamDogam.post.entity.Post;
 import com.codestates.BocamDogam.post.mapper.PostMapper;
 import com.codestates.BocamDogam.post.repository.PostRepository;
 import com.codestates.BocamDogam.post.service.PostService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.Base64Utils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Convert;
 import javax.validation.constraints.Positive;
-import java.io.ByteArrayInputStream;
+
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
-import static java.util.Base64.getDecoder;
 
 @RestController
 @RequestMapping("/main/community/board")
@@ -44,14 +31,12 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
 
-    private final MemberDetailsService memberDetailsService;
     private final PostRepository postRepository;
     private final PostMapper postMapper;
 
-    public PostController(PostService postService, MemberService memberService, MemberDetailsService memberDetailsService, PostRepository postRepository, PostMapper postMapper) {
+    public PostController(PostService postService, MemberService memberService, PostRepository postRepository, PostMapper postMapper) {
         this.postService = postService;
         this.memberService = memberService;
-        this.memberDetailsService = memberDetailsService;
         this.postRepository = postRepository;
         this.postMapper = postMapper;
     }
@@ -82,15 +67,6 @@ public class PostController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/random")
-    public String random(@RequestHeader("Authorization") String token) {
-        String ans = "";
-        if(token == null) {
-            ans = "bring your token";
-        } else {
-            ans = "you've brought your token!";
-        } return ans;
-    }
     // 게시글 수정
     @PatchMapping("/{board}/{post-id}")
     public ResponseEntity patchPost(@PathVariable("board") Post.Board board,

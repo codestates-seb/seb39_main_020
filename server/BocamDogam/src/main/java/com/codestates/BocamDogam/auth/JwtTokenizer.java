@@ -35,8 +35,6 @@ public class JwtTokenizer {
 
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
-//        return Encoders.BASE64URL.encode(secretKey.getBytes(StandardCharsets.UTF_8));
-//        return Base64Utils.encodeToUrlSafeString(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
     public String generateAccessToken(Map<String, Object> claims,
