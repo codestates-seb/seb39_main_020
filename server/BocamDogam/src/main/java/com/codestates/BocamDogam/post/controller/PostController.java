@@ -74,24 +74,12 @@ public class PostController {
                                     @PathVariable("post-id") @Positive Long postId,
                                     @RequestBody PostDto.Patch requestBody) {
         Post post = postService.findPost(postId);
-
-        System.out.println(":::::::::::::::::::::::::::::::::::::::");
-        System.out.println(post.getPostId());
-        System.out.println(post.getTitle());
-        System.out.println(post.getMember().getNickname());
-        System.out.println(":::::::::::::::::::::::::::::::::::::::");
-
         Long writerId = post.getMember().getMemberId();
-
-        System.out.println(writerId);
-        System.out.println(":::::::::::::::::::::::::::::::::::::::");
 
         memberService.verifyWriterMember(token, writerId);
 
         requestBody.setPostId(postId);
-        Post patchedPost = postService.updatePost(
-                postMapper.postPatchToPost(requestBody)
-        );
+        Post patchedPost = postService.updatePost(postMapper.postPatchToPost(requestBody));
 
         return new ResponseEntity<>(postMapper.postToPostResponse(patchedPost),
                 HttpStatus.CREATED);
