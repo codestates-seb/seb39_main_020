@@ -1,13 +1,13 @@
-package com.codestates.BocamDogam.post.dto;
+package com.codestates.BocamDogam.question.dto;
 
 import com.codestates.BocamDogam.member.entity.Member;
-import com.codestates.BocamDogam.post.entity.Post.Board;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public class PostDto {
+public class QuestionDto {
+
     @Getter
     @Setter
     public static class Post {
@@ -18,8 +18,7 @@ public class PostDto {
     @Getter
     @Setter
     public static class Patch {
-        private Long postId;
-        private Board board;
+        private Long questionId;
         private String title;
         private String content;
     }
@@ -27,9 +26,8 @@ public class PostDto {
     @Getter
     @Setter
     public static class Response {
-        private Long postId;
+        private Long questionId;
         private Member member;
-        private Board board;
         private String title;
         private String content;
         private int view;

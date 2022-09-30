@@ -29,4 +29,6 @@ public interface MemberService {
 
     // 등록 회원 검증
     void verifyExistEmail(String Email);
+
+    void verifyWriterMember(String token, Long memberId);
 }
