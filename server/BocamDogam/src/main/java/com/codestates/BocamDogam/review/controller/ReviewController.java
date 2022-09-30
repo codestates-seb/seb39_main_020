@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/main/institutes/{institute-id}/")
+@RequestMapping("/main/institutes/{institute-id}/reviews")
 public class ReviewController {
     // 리뷰를 생성하는 요청
 
