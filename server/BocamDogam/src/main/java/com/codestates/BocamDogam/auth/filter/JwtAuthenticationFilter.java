@@ -39,6 +39,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
+    protected String obtainUsername(HttpServletRequest request) {
+        return super.obtainUsername(request);
+    }
+
+    @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,
                                             FilterChain chain,

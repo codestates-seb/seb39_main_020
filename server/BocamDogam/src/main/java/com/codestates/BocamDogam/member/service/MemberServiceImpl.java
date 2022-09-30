@@ -5,9 +5,11 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.repository.MemberRepository;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +45,12 @@ public class MemberServiceImpl implements MemberService {
         return findVerifiedMember(memberId);
     }
 
-    // TODO: 모든 회원 조회
+    // 모든 회원 정보 조회
+    @Override
+    public Page<Member> findMembers(int page, int size) {
+        return memberRepository.findAll(PageRequest.of(page, size,
+                Sort.by("memberId").descending()));
+    }
 
     // 회원 정보 수정
     public Member updateMember(Member member) {
@@ -61,6 +68,14 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.delete(member);
     }
 
+    // 이메일로 회원 확인
+    public Member findMemberByEmail(String email) {
+        Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member member = findMember.get();
+
+        return member;
+    }
+
     // 회원 검증
     public Member findVerifiedMember(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
@@ -76,5 +91,24 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> verifyMember = memberRepository.findByEmail(email);
         if(verifyMember.isPresent())
             throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
+    }
+
+    public void verifyWriterMember(String token, Long memberId) {
+        Base64.Decoder decoder = Base64.getDecoder();
+        String[] splitJwt = token.split("\\.");
+        String payload = new String(decoder.decode(splitJwt[1]
+                .replace("-", "+")
+                .replace ("_", "/")));
+
+        String email = new String(payload.substring(payload.indexOf("email") + 8, payload.indexOf("com")+3));
+        System.out.println(email);
+
+        Long requestMemberId = findMemberByEmail(email).getMemberId();
+
+        if (requestMemberId != memberId) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
+
+
     }
 }

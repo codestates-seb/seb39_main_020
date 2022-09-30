@@ -2,6 +2,7 @@ package com.codestates.BocamDogam.institute.service;
 
 import com.codestates.BocamDogam.institute.entity.Institute;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 public interface InstituteService {
     // 교육기관 등록
@@ -24,4 +25,6 @@ public interface InstituteService {
 
     // 교육기관 이름으로 검증
     void verifyExistName(String name);
+
+    // TODO: 리뷰의 평균 평점을 합산하여 평균내는 로직
 }
