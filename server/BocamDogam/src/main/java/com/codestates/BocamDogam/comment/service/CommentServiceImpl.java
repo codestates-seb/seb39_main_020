@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Page<Comment> findComments(int page, int size, String boardName) {
+    public Page<Comment> findComments(int page, int size) {
         Pageable pageable = PageRequest.of(page, size,
                 Sort.Direction.DESC, "commentId");
 

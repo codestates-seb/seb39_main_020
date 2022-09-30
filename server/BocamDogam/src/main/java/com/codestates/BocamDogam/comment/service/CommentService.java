@@ -12,7 +12,7 @@ public interface CommentService {
 
     Comment findComment(Long commentId);
 
-    Page<Comment> findComments(int page, int size, String boardName);
+    Page<Comment> findComments(int page, int size);
 
     void deleteComment(Long commentId);
 

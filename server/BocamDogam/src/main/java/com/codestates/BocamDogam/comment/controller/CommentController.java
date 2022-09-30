@@ -90,7 +90,7 @@ public class CommentController {
                                       @PathVariable("post-id") Long questionId,
                                       @RequestParam @Positive int page,
                                       @RequestParam @Positive int size) {
-        Page<Comment> pageComments  = commentService.findComments(page - 1, size, board.toString());
+        Page<Comment> pageComments  = commentService.findComments(page - 1, size);
         List<Comment> answers = pageComments.getContent();
 
         return new ResponseEntity<>(
