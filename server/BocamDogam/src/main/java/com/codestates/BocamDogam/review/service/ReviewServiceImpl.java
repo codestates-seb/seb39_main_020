@@ -4,7 +4,6 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.institute.service.InstituteService;
 import com.codestates.BocamDogam.member.service.MemberService;
-import com.codestates.BocamDogam.post.entity.Post;
 import com.codestates.BocamDogam.review.entity.Review;
 import com.codestates.BocamDogam.review.repository.ReviewRepository;
 import org.springframework.data.domain.Page;
@@ -56,7 +55,20 @@ public class ReviewServiceImpl implements ReviewService {
         Review findReview = findVerifiedReview(review.getReviewId());
         Optional.ofNullable(review.getCurriculum())
                 .ifPresent(curriculum -> findReview.setCurriculum(curriculum));
-
+        Optional.ofNullable(review.getFresh())
+                .ifPresent(fresh -> findReview.setFresh(fresh));
+        Optional.ofNullable(review.getLecturer())
+                .ifPresent(lecturer -> findReview.setLecturer(lecturer));
+        Optional.ofNullable(review.getCare())
+                .ifPresent(care -> findReview.setCare(care));
+        Optional.ofNullable(review.getAtmosphere())
+                .ifPresent(atmosphere -> findReview.setAtmosphere(atmosphere));
+        Optional.ofNullable(review.getGood())
+                .ifPresent(good -> findReview.setGood(good));
+        Optional.ofNullable(review.getBad())
+                .ifPresent(bad -> findReview.setBad(bad));
+        Optional.ofNullable(review.getSummary())
+                .ifPresent(summary -> findReview.setSummary(summary));
 
         return reviewRepository.save(findReview);
     }
