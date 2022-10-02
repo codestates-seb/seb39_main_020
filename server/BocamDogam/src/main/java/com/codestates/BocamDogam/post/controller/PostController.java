@@ -1,6 +1,7 @@
 package com.codestates.BocamDogam.post.controller;
 
 import com.codestates.BocamDogam.dto.MultiResponseDto;
+import com.codestates.BocamDogam.like.post_like.PostLikeService;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.service.MemberService;
 import com.codestates.BocamDogam.post.dto.PostDto;
@@ -30,7 +31,6 @@ public class PostController {
 
     private final PostService postService;
     private final MemberService memberService;
-
     private final PostRepository postRepository;
     private final PostMapper postMapper;
 

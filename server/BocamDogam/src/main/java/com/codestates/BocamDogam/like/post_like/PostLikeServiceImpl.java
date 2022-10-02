@@ -2,6 +2,7 @@ package com.codestates.BocamDogam.like.post_like;
 
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.post.entity.Post;
+import com.codestates.BocamDogam.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
