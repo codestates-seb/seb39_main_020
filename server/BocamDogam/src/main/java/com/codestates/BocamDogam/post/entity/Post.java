@@ -35,8 +35,8 @@ public class Post extends BaseTimeEntity {
     @Column
     private int view = 0;
 
-    @Column
-    private int like_count = 0;
+    @Column(name = "like_count")
+    private int likeCount = 0;
 
     @Column
     private boolean reported;

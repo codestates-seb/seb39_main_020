@@ -43,7 +43,7 @@ public class PostLikeController {
 
         PostLike postLike = postLikeService.clickLike(member, post);
 
-        post.setLike_count(postLikeService.findPostLikes(postId));
+        post.setLikeCount(postLikeService.findPostLikes(postId));
         postRepository.save(post);
 
         return new ResponseEntity(postLike.is_liked(), HttpStatus.OK);

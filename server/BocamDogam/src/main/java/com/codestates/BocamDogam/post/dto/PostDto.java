@@ -33,7 +33,7 @@ public class PostDto {
         private String title;
         private String content;
         private int view;
-        private int like_count;
+        private int likeCount;
         private boolean reported;
         private boolean block;
         private LocalDateTime createdDate;

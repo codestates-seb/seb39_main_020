@@ -95,13 +95,9 @@ public class PostController {
 
     // 인기글 조회
     @GetMapping("/{board}/liked")
-    public ResponseEntity getLikedPosts() {
-        Sort sort = Sort.by("like_count").descending();
-        Pageable pageable = PageRequest.of(0, 5, sort);
-        Page<Post> result = postRepository.findAll(pageable);
+    public ResponseEntity getLikedPosts(@PathVariable("board") Post.Board board) {
+        Page<Post> result = postService.findLikedPosts(board.toString());
         List<Post> response = result.getContent();
-        System.out.println(result);
-        System.out.println(response);
         return new ResponseEntity<>(
                 new MultiResponseDto<>(postMapper.PostResponseToPostResponses(response), result), HttpStatus.OK);
     }
@@ -110,13 +106,12 @@ public class PostController {
     public ResponseEntity getPosts(@PathVariable("board") Post.Board board,
                                    @Positive @RequestParam int page,
                                    @Positive @RequestParam int size) {
-        String boardName = board.toString();
-        Page<Post> pagePosts = postService.findPosts(page - 1, size, boardName);
-        List<Post> posts = pagePosts.getContent();
+        Page<Post> result = postService.findPosts(page - 1, size, board.toString());
+        List<Post> response = result.getContent();
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(postMapper.PostResponseToPostResponses(posts),
-                        pagePosts),
+                new MultiResponseDto<>(postMapper.PostResponseToPostResponses(response),
+                        result),
                 HttpStatus.OK);
     }
 
