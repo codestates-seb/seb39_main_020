@@ -43,7 +43,7 @@ public class PostController {
 
     // 게시글 생성
     @PostMapping("/{board}/write")
-    public ResponseEntity postPost(@PathVariable("board") Post.Board board,
+    public ResponseEntity putPost(@PathVariable("board") Post.Board board,
                                    @RequestHeader(value = "Authorization") String token,
                                    @RequestBody PostDto.Post requestBody) {
 
