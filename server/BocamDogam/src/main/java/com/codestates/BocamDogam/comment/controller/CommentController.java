@@ -21,7 +21,7 @@ import java.util.Base64;
 import java.util.List;
 
 @RestController
-@RequestMapping("/main/community/board")
+@RequestMapping("/main/community")
 @Validated
 public class CommentController {
 
@@ -40,7 +40,7 @@ public class CommentController {
     }
 
     // 댓글 등록
-    @PostMapping("/{board}/{post-id}/comments")
+    @PostMapping("/{post-id}/comments")
     public ResponseEntity postComment(@PathVariable("board") Post.Board board,
                                       @PathVariable("post-id") @Positive Long postId,
                                       @RequestHeader(value = "Authorization") String token,
@@ -68,7 +68,7 @@ public class CommentController {
     }
 
     // 댓글 수정
-    @PatchMapping("/{board}/{post-id}/comments/{comment-id}")
+    @PatchMapping("/{post-id}/comments/{comment-id}")
     public ResponseEntity patchComment(@PathVariable("board") Post.Board board,
                                        @PathVariable("post-id") @Positive Long postId,
                                        @PathVariable("comment-id") @Positive Long commentId,
@@ -85,7 +85,7 @@ public class CommentController {
     }
 
     // 게시글에 등록된 댓글 전체 조회
-    @GetMapping("/{board}/{post-id}/comments")
+    @GetMapping("/{post-id}/comments")
     public ResponseEntity getComments(@PathVariable("board") Post.Board board,
                                       @PathVariable("post-id") Long questionId,
                                       @RequestParam @Positive int page,
@@ -100,7 +100,7 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/{board}/{post-id}/comments/{comment-id}")
+    @DeleteMapping("/{post-id}/comments/{comment-id}")
     public ResponseEntity deleteComment(@PathVariable("board") Post.Board board,
                                         @PathVariable("post-id") Long postId,
                                         @PathVariable("comment-id") Long commentId,
