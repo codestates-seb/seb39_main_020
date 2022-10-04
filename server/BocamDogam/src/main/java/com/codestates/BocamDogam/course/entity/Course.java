@@ -1,5 +1,6 @@
 package com.codestates.BocamDogam.course.entity;
 
+import com.codestates.BocamDogam.audit.BaseTimeEntity;
 import com.codestates.BocamDogam.institute.entity.Institute;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class Course extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long courseId;

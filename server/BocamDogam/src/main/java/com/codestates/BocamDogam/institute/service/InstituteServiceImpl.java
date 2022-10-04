@@ -4,6 +4,7 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.institute.entity.Institute;
 import com.codestates.BocamDogam.institute.repository.InstituteRepository;
+import com.codestates.BocamDogam.review.repository.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,9 +15,12 @@ import java.util.Optional;
 @Service
 public class InstituteServiceImpl implements InstituteService {
     private final InstituteRepository instituteRepository;
+    private final ReviewRepository reviewRepository;
 
-    public InstituteServiceImpl(InstituteRepository instituteRepository) {
+    public InstituteServiceImpl(InstituteRepository instituteRepository,
+                                ReviewRepository reviewRepository) {
         this.instituteRepository = instituteRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     @Override
@@ -74,7 +78,14 @@ public class InstituteServiceImpl implements InstituteService {
     @Override
     public void verifyExistName(String name) {
         Optional<Institute> verifyInstitute = instituteRepository.findByName(name);
-        if(verifyInstitute.isPresent())
+        if(verifyInstitute.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.INSTITUTE_EXISTS);
+        }
+    }
+
+    // 리뷰 점수를 바탕으로 평균 점수를 계산하는 메서드
+    @Override
+    public Double calculateAverageScore(Institute institute) {
+        return null;
     }
 }
