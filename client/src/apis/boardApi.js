@@ -1,6 +1,7 @@
 import { adelete, aget, apost, aput } from "../configs/axiosConfig";
 
-const targetBE = "http://localhost:8080/admin";
+const targetBE =
+  "http://cs-project-020.czj9etptcqzw.ap-northeast-2.rds.amazonaws.com:3306";
 
 const getBoardsApi = (payload) => {
   return aget(`${targetBE}/board`, payload);
