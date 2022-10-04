@@ -7,6 +7,7 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     MEMBER_NOT_ALLOWED(401, "Member cannot patch or delete others' activities."),
     POST_NOT_FOUND(404, "Post not found"),
+    COMMENT_NOT_FOUND(404, "Comment not found"),
     QUESTION_NOT_FOUND(404, "Question not found"),
     INSTITUTE_NOT_FOUND(404, "Institute not found"),
     INSTITUTE_EXISTS(409, "Institute exists"),
