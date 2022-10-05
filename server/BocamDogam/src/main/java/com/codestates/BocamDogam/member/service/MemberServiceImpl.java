@@ -104,7 +104,6 @@ public class MemberServiceImpl implements MemberService {
                 .replace ("_", "/")));
 
         String email = new String(payload.substring(payload.indexOf("email") + 8, payload.indexOf("com")+3));
-        System.out.println(email);
 
         Long requestMemberId = findMemberByEmail(email).getMemberId();
 
