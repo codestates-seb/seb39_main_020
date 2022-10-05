@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -74,7 +75,9 @@ public class MemberController {
     // 회원 정보 수정 요청
     @PatchMapping("/main/members/{member-id}")
     public ResponseEntity updateMember(@PathVariable("member-id") @Positive Long memberId,
+                                       @RequestHeader(value = "Authorization") String token,
                                        @Valid @RequestBody MemberPatchDto requestBody) {
+        memberService.verifyWriterMember(token, memberId);
         requestBody.setMemberId(memberId);
         Member member = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
 
