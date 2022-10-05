@@ -1,5 +1,6 @@
 package com.codestates.BocamDogam.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Member {
     @Column(nullable = false, updatable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
