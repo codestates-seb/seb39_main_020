@@ -6,32 +6,28 @@ import com.codestates.BocamDogam.institute.service.InstituteService;
 import com.codestates.BocamDogam.member.service.MemberService;
 import com.codestates.BocamDogam.review.entity.Review;
 import com.codestates.BocamDogam.review.repository.ReviewRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final MemberService memberService;
     private final InstituteService instituteService;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository,
-                             MemberService memberService,
-                             InstituteService instituteService) {
-        this.reviewRepository = reviewRepository;
-        this.memberService = memberService;
-        this.instituteService = instituteService;
-    }
 
     @Override
     public Review createReview(Review review) {
         // 리뷰 작성 시 검증된 사람만 리뷰를 입력할 수 있도록 조정 필요
-        // 멤버의 권한 정보를 받아 입력 폼에 들어오기 전에 확인 필요
+        // 멤버의 권한 정보를 받아 입력 폼에 들어오기 전에 확인 필요 -> 컨트롤러에서 확인
 
         return reviewRepository.save(review);
     }
@@ -95,5 +91,28 @@ public class ReviewServiceImpl implements ReviewService {
 
         // 교육기관이 존재하는지 확인
         instituteService.findVerifiedInstitute(review.getInstitute().getInstituteId());
+    }
+
+    // 각 점수를 받아 평균 점수 산출
+    public Double getAverageScore(Review review) {
+        // 리스트 선언 후 스트림으로 바꾸는 것이 좋을 듯
+        /*
+        List<Integer> scoreList = List.of(
+                review.getCurriculum(),
+                review.getFresh(),
+                review.getLecturer(),
+                review.getCare(),
+                review.getAtmosphere());
+         */
+
+        int curriculum = review.getCurriculum();
+        int fresh = review.getFresh();
+        int lecturer = review.getLecturer();
+        int care = review.getCare();
+        int atmosphere = review.getAtmosphere();
+
+        Double averageScore = (curriculum + fresh + lecturer + care + atmosphere)/5d;
+
+        return averageScore;
     }
 }
