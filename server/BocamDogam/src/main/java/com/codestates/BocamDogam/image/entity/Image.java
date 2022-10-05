@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ImageId;
+    private Long imageId;
 
     @Column
     private String fileName;
@@ -26,5 +26,14 @@ public class Image {
     public Image(String fileName, String fileUrl) {
         this.fileName = fileName;
         this.fileUrl = fileUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "FileEntity{" +
+                "imageid =" + imageId +
+                ", fileName ='" + fileName + '\'' +
+                ", fileUrl ='" + fileUrl + '\'' +
+                '}';
     }
 }

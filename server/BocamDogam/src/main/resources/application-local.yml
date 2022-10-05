@@ -19,6 +19,9 @@ spring:
 logging:
   level:
     org:
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR
       springframework:
         orm:
           jpa: DEBUG

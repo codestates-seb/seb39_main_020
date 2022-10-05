@@ -2,6 +2,7 @@ package com.codestates.BocamDogam.image.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ImageDto {
     @Getter
@@ -9,6 +10,7 @@ public class ImageDto {
     public static class Post {
         private String fileName;
         private String fileUrl;
+        private MultipartFile file;
     }
 
     @Getter
@@ -17,5 +19,6 @@ public class ImageDto {
         private Long imageId;
         private String fileName;
         private String fileUrl;
+        private MultipartFile file;
     }
 }

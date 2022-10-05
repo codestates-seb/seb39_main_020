@@ -1,5 +1,7 @@
 package com.codestates.BocamDogam.image.service;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.codestates.BocamDogam.image.entity.Image;
@@ -11,39 +13,63 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class S3ImageService {
     private final AmazonS3 amazonS3;
-    private final ImageRepository imageRepository;
+    // private final ImageRepository imageRepository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
 
     public String uploadImage(MultipartFile multipartFile) throws IOException {
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(multipartFile.getContentType());
-        objectMetadata.setContentLength(multipartFile.getSize());
-
-        String originalFilename = multipartFile.getOriginalFilename();
-        int index = originalFilename.lastIndexOf(".");
-        String ext = originalFilename.substring(index + 1);
-
-        String storeFilename = UUID.randomUUID() + "." + ext;
-        String key = "image/" + storeFilename;
-
         String fileName = multipartFile.getOriginalFilename();
 
-        try (InputStream inputStream = multipartFile.getInputStream()) {
-            amazonS3.putObject(new PutObjectRequest(bucket, key, inputStream, objectMetadata)
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        //파일 형식 구하기
+        String ext = fileName.split("\\.")[1];
+        String contentType = "";
+
+        //content type을 지정해서 올려주지 않으면 자동으로 "application/octet-stream"으로 고정이 되서 링크 클릭시 웹에서 열리는게 아니라 자동 다운이 시작됨.
+        switch (ext) {
+            case "jpeg":
+                contentType = "image/jpeg";
+                break;
+            case "png":
+                contentType = "image/png";
+                break;
+            case "txt":
+                contentType = "text/plain";
+                break;
+            case "csv":
+                contentType = "text/csv";
+                break;
         }
 
-        String storeFileUrl = amazonS3.getUrl(bucket, key).toString();
-        Image uploadImage = new Image(originalFilename, storeFileUrl);
-        imageRepository.save(uploadImage);
-        return originalFilename;
+        try {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(contentType);
+
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, multipartFile.getInputStream(), metadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        }
+        catch (AmazonServiceException e) {
+            e.printStackTrace();
+        }
+        catch (SdkClientException e) {
+            e.printStackTrace();
+        }
+
+        //object 정보 가져오기
+        ListObjectsV2Result listObjectsV2Result = amazonS3.listObjectsV2(bucket);
+        List<S3ObjectSummary> objectSummaries = listObjectsV2Result.getObjectSummaries();
+
+        for (S3ObjectSummary object: objectSummaries) {
+            System.out.println("object = " + object.toString());
+        }
+        return amazonS3.getUrl(bucket, fileName).toString();
     }
 }
+
