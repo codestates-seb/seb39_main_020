@@ -5,6 +5,7 @@ import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.repository.MemberRepository;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -103,7 +104,6 @@ public class MemberServiceImpl implements MemberService {
                 .replace ("_", "/")));
 
         String email = new String(payload.substring(payload.indexOf("email") + 8, payload.indexOf("com")+3));
-        System.out.println(email);
 
         Long requestMemberId = findMemberByEmail(email).getMemberId();
 

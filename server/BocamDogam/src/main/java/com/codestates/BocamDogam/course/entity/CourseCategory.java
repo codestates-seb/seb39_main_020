@@ -3,6 +3,7 @@ package com.codestates.BocamDogam.course.entity;
 import lombok.Getter;
 
 public enum CourseCategory {
+    // 드롭다운으로 표시하여 선택할 수 있도록
     FRONT_END("프론트엔드"),
     BACK_END("백엔드"),
     DEV_OPS("데브옵스"),

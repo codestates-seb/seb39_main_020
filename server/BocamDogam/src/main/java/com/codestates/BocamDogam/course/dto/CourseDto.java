@@ -58,9 +58,9 @@ public class CourseDto {
         private LocalDateTime applyEnd;
         private LocalDateTime StartDate;
         private LocalDateTime EndDate;
-        private int period;
-        private int scale;
-        private int cost;
+        private long period;
+        private long scale;
+        private long cost;
         private boolean support;
         private boolean remote;
         private String ApplyStatus;

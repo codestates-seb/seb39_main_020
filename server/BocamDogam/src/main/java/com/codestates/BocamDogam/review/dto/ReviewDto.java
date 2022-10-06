@@ -44,6 +44,7 @@ public class ReviewDto {
         private int lecturer;
         private int care;
         private int atmosphere;
+        private Double averageScore;
         private String good;
         private String bad;
         private String summary;

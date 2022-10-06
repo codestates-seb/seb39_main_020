@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -27,10 +28,6 @@ public class MemberController {
         this.memberMapper = memberMapper;
     }
 
-    @GetMapping("/jwtTest")
-    public String jwtTest(@RequestHeader("Authorization") String token) {
-        return "you've got token. token : " + token;
-    }
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -78,7 +75,9 @@ public class MemberController {
     // 회원 정보 수정 요청
     @PatchMapping("/main/members/{member-id}")
     public ResponseEntity updateMember(@PathVariable("member-id") @Positive Long memberId,
+                                       @RequestHeader(value = "Authorization") String token,
                                        @Valid @RequestBody MemberPatchDto requestBody) {
+        memberService.verifyWriterMember(token, memberId);
         requestBody.setMemberId(memberId);
         Member member = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
 
@@ -89,7 +88,9 @@ public class MemberController {
 
     // 회원 삭제 요청
     @DeleteMapping("/main/members/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId) {
+    public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId,
+                                       @RequestHeader(value = "Authorization") String token) {
+        memberService.verifyWriterMember(token, memberId);
         memberService.deleteMember(memberId);
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT);

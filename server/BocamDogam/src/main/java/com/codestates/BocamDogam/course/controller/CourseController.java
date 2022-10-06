@@ -7,7 +7,7 @@ import com.codestates.BocamDogam.course.service.CourseService;
 import com.codestates.BocamDogam.dto.MultiResponseDto;
 import com.codestates.BocamDogam.institute.entity.Institute;
 import com.codestates.BocamDogam.institute.service.InstituteService;
-import org.springframework.data.domain.Sort;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +18,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/main/institutes/{institute-id}/courses")
 public class CourseController {
     private final CourseService courseService;
     private final CourseMapper courseMapper;
     private final InstituteService instituteService;
 
-    public CourseController(CourseService courseService,
-                            CourseMapper courseMapper,
-                            InstituteService instituteService) {
-        this.courseService = courseService;
-        this.courseMapper = courseMapper;
-        this.instituteService = instituteService;
-    }
 
     // 특정 교육기관의 교육과정 생성 요청
+    // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
     @PostMapping
     public ResponseEntity postCourse(@PathVariable("institute-id") @Positive Long instituteId,
                                      @Valid @RequestBody CourseDto.Post coursePost) {
@@ -54,6 +49,7 @@ public class CourseController {
     }
 
     // 해당 교육기관의 모든 교육 과정 조회 요청
+    // 페이지네이션 적용?
     @GetMapping
     public ResponseEntity getCourses(@PathVariable("institute-id") @Positive Long instituteId) {
 
@@ -67,6 +63,7 @@ public class CourseController {
     }
 
     // 특정 교육기관의 교육과정 정보 수정 요청
+    // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
     @PatchMapping("/{course-id}")
     public ResponseEntity getCourses(@PathVariable("institute-id") @Positive Long instituteId,
                                      @PathVariable("course-id") @Positive Long courseId,
