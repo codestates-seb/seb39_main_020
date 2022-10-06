@@ -2,6 +2,7 @@ package com.codestates.BocamDogam.review.service;
 
 import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
+import com.codestates.BocamDogam.institute.entity.Institute;
 import com.codestates.BocamDogam.institute.service.InstituteService;
 import com.codestates.BocamDogam.member.service.MemberService;
 import com.codestates.BocamDogam.review.entity.Review;
@@ -33,6 +34,9 @@ public class ReviewServiceImpl implements ReviewService {
         // 멤버의 권한 정보를 받아 입력 폼에 들어오기 전에 확인 필요 -> 컨트롤러에서 확인
         Review savedReview = reviewRepository.save(review);
         savedReview.setAverageScore(calculateAverageScore(review));
+
+        Institute findInstitute = instituteService.findInstitute(review.getInstitute().getInstituteId());
+        findInstitute.setScore(instituteService.calculateInstituteAverageScore(findInstitute));
 
         return savedReview;
     }
@@ -72,6 +76,9 @@ public class ReviewServiceImpl implements ReviewService {
                 .ifPresent(summary -> findReview.setSummary(summary));
 
         findReview.setAverageScore(calculateAverageScore(review));
+
+        Institute findInstitute = instituteService.findInstitute(review.getInstitute().getInstituteId());
+        findInstitute.setScore(instituteService.calculateInstituteAverageScore(findInstitute));
 
         return reviewRepository.save(findReview);
     }
