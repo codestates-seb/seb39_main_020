@@ -6,6 +6,7 @@ import com.codestates.BocamDogam.review.dto.ReviewDto;
 import com.codestates.BocamDogam.review.entity.Review;
 import com.codestates.BocamDogam.review.mapper.ReviewMapper;
 import com.codestates.BocamDogam.review.service.ReviewService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +17,12 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/main/institutes/{institute-id}/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
     private final InstituteService instituteService;
     private final ReviewMapper reviewMapper;
-
-
-    public ReviewController(ReviewService reviewService,
-                            ReviewMapper reviewMapper,
-                            InstituteService instituteService) {
-        this.reviewService = reviewService;
-        this.reviewMapper = reviewMapper;
-        this.instituteService = instituteService;
-    }
 
 
     // 리뷰를 생성하는 요청

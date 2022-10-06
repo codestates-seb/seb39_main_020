@@ -55,6 +55,11 @@ public class Review extends BaseTimeEntity {
     @Max(5)
     private int atmosphere;
 
+    @Column
+    @Min(1)
+    @Max(5)
+    private Double averageScore;
+
     @Column(nullable = false)
     private String good;
 
@@ -72,5 +77,4 @@ public class Review extends BaseTimeEntity {
 
     @Column
     private boolean block;
-
 }
