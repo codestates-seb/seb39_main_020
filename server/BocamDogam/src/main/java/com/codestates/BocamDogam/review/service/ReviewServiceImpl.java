@@ -12,8 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +31,10 @@ public class ReviewServiceImpl implements ReviewService {
     public Review createReview(Review review) {
         // 리뷰 작성 시 검증된 사람만 리뷰를 입력할 수 있도록 조정 필요
         // 멤버의 권한 정보를 받아 입력 폼에 들어오기 전에 확인 필요 -> 컨트롤러에서 확인
+        Review savedReview = reviewRepository.save(review);
+        savedReview.setAverageScore(calculateAverageScore(review));
 
-        return reviewRepository.save(review);
+        return savedReview;
     }
 
     @Override
@@ -49,15 +54,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review updateReview(Review review) {
         Review findReview = findVerifiedReview(review.getReviewId());
-        Optional.ofNullable(review.getCurriculum())
+        Optional.of(review.getCurriculum())
                 .ifPresent(curriculum -> findReview.setCurriculum(curriculum));
-        Optional.ofNullable(review.getFresh())
+        Optional.of(review.getFresh())
                 .ifPresent(fresh -> findReview.setFresh(fresh));
-        Optional.ofNullable(review.getLecturer())
+        Optional.of(review.getLecturer())
                 .ifPresent(lecturer -> findReview.setLecturer(lecturer));
-        Optional.ofNullable(review.getCare())
+        Optional.of(review.getCare())
                 .ifPresent(care -> findReview.setCare(care));
-        Optional.ofNullable(review.getAtmosphere())
+        Optional.of(review.getAtmosphere())
                 .ifPresent(atmosphere -> findReview.setAtmosphere(atmosphere));
         Optional.ofNullable(review.getGood())
                 .ifPresent(good -> findReview.setGood(good));
@@ -65,6 +70,8 @@ public class ReviewServiceImpl implements ReviewService {
                 .ifPresent(bad -> findReview.setBad(bad));
         Optional.ofNullable(review.getSummary())
                 .ifPresent(summary -> findReview.setSummary(summary));
+
+        findReview.setAverageScore(calculateAverageScore(review));
 
         return reviewRepository.save(findReview);
     }
@@ -94,24 +101,16 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     // 각 점수를 받아 평균 점수 산출
-    public Double getAverageScore(Review review) {
-        // 리스트 선언 후 스트림으로 바꾸는 것이 좋을 듯
-        /*
-        List<Integer> scoreList = List.of(
-                review.getCurriculum(),
-                review.getFresh(),
-                review.getLecturer(),
-                review.getCare(),
-                review.getAtmosphere());
-         */
+    public Double calculateAverageScore(Review review) {
+        List<Integer> scoreList = new ArrayList<>();
+        scoreList.add(review.getCurriculum());
+        scoreList.add(review.getFresh());
+        scoreList.add(review.getLecturer());
+        scoreList.add(review.getCare());
+        scoreList.add(review.getAtmosphere());
 
-        int curriculum = review.getCurriculum();
-        int fresh = review.getFresh();
-        int lecturer = review.getLecturer();
-        int care = review.getCare();
-        int atmosphere = review.getAtmosphere();
-
-        Double averageScore = (curriculum + fresh + lecturer + care + atmosphere)/5d;
+        Double averageScore = scoreList.stream()
+                .collect(Collectors.averagingDouble(Integer::intValue));
 
         return averageScore;
     }
