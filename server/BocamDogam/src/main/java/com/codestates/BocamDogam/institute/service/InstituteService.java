@@ -29,5 +29,5 @@ public interface InstituteService {
     void verifyExistName(String name);
 
     // 리뷰의 평균 평점을 합산하여 평균값 계산
-    Double calculateAverageScore(Institute institute);
+    Double calculateInstituteAverageScore(Institute institute);
 }
