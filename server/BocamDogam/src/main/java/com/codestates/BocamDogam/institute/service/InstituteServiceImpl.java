@@ -92,7 +92,7 @@ public class InstituteServiceImpl implements InstituteService {
         // 리뷰에 있는 평균 점수의 평균 구하기
         List<Review> reviews = institute.getReviewList();
         Double averageReviewScore = reviews.stream()
-                .collect(Collectors.averagingDouble(Review::getCurriculum));
+                .collect(Collectors.averagingDouble(Review::getAverageScore));
 
         return averageReviewScore;
     }
