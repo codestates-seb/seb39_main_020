@@ -4,6 +4,8 @@ import com.codestates.BocamDogam.institute.entity.Institute;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public interface InstituteService {
     // 교육기관 등록
     Institute createInstitute(Institute institute);
@@ -26,5 +28,6 @@ public interface InstituteService {
     // 교육기관 이름으로 검증
     void verifyExistName(String name);
 
-    // TODO: 리뷰의 평균 평점을 합산하여 평균내는 로직
+    // 리뷰의 평균 평점을 합산하여 평균값 계산
+    Double calculateAverageScore(Institute institute);
 }
