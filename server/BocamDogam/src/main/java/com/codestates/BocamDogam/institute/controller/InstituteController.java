@@ -5,6 +5,7 @@ import com.codestates.BocamDogam.institute.dto.InstituteDto;
 import com.codestates.BocamDogam.institute.entity.Institute;
 import com.codestates.BocamDogam.institute.mapper.InstituteMapper;
 import com.codestates.BocamDogam.institute.service.InstituteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,12 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/main/institutes")
 public class InstituteController {
     private final InstituteService instituteService;
     private final InstituteMapper instituteMapper;
 
-    public InstituteController(InstituteService instituteService, InstituteMapper instituteMapper) {
-        this.instituteService = instituteService;
-        this.instituteMapper = instituteMapper;
-    }
 
     // 교육기관 생성 요청
     @PostMapping

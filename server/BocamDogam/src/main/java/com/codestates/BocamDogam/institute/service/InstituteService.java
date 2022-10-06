@@ -4,6 +4,8 @@ import com.codestates.BocamDogam.institute.entity.Institute;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 public interface InstituteService {
     // 교육기관 등록
     Institute createInstitute(Institute institute);

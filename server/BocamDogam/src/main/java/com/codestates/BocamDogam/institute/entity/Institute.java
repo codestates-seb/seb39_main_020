@@ -41,9 +41,7 @@ public class Institute extends BaseTimeEntity {
     /**
      *   TODO: 교육기관 평점 표시하는 방법 구현 필요
      *   해당 교육기관 리뷰에 있는 종합 평점의 평균을 사용할 예정
-     *   어떻게 구현할지 고민 -> 서비스 단에서 구현
      */
-
     @Column
     private Double score;
 
