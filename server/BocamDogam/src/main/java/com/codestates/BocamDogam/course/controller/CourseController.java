@@ -27,6 +27,7 @@ public class CourseController {
 
 
     // 특정 교육기관의 교육과정 생성 요청
+    // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
     @PostMapping
     public ResponseEntity postCourse(@PathVariable("institute-id") @Positive Long instituteId,
                                      @Valid @RequestBody CourseDto.Post coursePost) {
@@ -62,6 +63,7 @@ public class CourseController {
     }
 
     // 특정 교육기관의 교육과정 정보 수정 요청
+    // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
     @PatchMapping("/{course-id}")
     public ResponseEntity getCourses(@PathVariable("institute-id") @Positive Long instituteId,
                                      @PathVariable("course-id") @Positive Long courseId,

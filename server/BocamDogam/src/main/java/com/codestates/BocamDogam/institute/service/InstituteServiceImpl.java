@@ -87,7 +87,7 @@ public class InstituteServiceImpl implements InstituteService {
 
     // 리뷰 점수를 바탕으로 평균 점수를 계산하는 메서드
     @Override
-    public Double calculateAverageScore(Institute institute) {
+    public Double calculateInstituteAverageScore(Institute institute) {
         // 아이디로 매칭되는 리뷰 조회
         // 리뷰에 있는 평균 점수의 평균 구하기
         List<Review> reviews = institute.getReviewList();

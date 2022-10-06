@@ -24,6 +24,7 @@ public class InstituteController {
 
 
     // 교육기관 생성 요청
+    // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
     @PostMapping
     public ResponseEntity postInstitute(@Valid @RequestBody InstituteDto.Post requestBody) {
         Institute institute = instituteMapper.institutePostToInstitute(requestBody);
@@ -55,6 +56,7 @@ public class InstituteController {
     }
 
     // 교육기관 수정 요청
+    // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
     @PatchMapping("/main/institutes/{institute-id}")
     public ResponseEntity patchInstitute(@PathVariable("institute-id") @Positive Long instituteId,
                                          @RequestBody InstituteDto.Patch requestBody) {
