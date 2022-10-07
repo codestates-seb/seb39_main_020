@@ -7,6 +7,9 @@ import SnackBarMessage from "../components/snackbarComponent";
 import Gnb from "./gnb";
 import Lnb from "./lnb";
 
+
+import Gnb2 from "./gnb2";
+
 const Layout = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);    
     const [snackbarMessage, setSnackbarMessage] = useState("");    
