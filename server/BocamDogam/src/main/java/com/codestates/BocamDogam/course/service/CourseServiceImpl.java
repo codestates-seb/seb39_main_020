@@ -1,36 +1,34 @@
 package com.codestates.BocamDogam.course.service;
 
+import com.codestates.BocamDogam.course.entity.ApplyStatus;
 import com.codestates.BocamDogam.course.entity.Course;
 import com.codestates.BocamDogam.course.repository.CourseRepository;
 import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
 import com.codestates.BocamDogam.institute.service.InstituteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
 
     private final InstituteService instituteService;
     private final CourseRepository courseRepository;
-
-    public CourseServiceImpl(InstituteService instituteService,
-                             CourseRepository courseRepository) {
-        this.instituteService = instituteService;
-        this.courseRepository = courseRepository;
-    }
 
     // 교육과정 생성
     @Override
     public Course createCourse(Course course) {
         verifyCourse(course);
         Course savedCourse = courseRepository.save(course);
-        // 코스 등록 시 강의 시간 계산하여 DB에 저장하는 메서드 필요
-        // 코스 등록 시 모집 여부를 계산하여 DB에 저장하는 메서드 필요
+        isApplying(course);
+        course.setPeriod(getCoursePeriod(course));
 
         return savedCourse;
     }
@@ -79,8 +77,8 @@ public class CourseServiceImpl implements CourseService {
         Optional.ofNullable(course.getApplyEnd())
                 .ifPresent(applyEnd -> findCourse.setApplyEnd(applyEnd));
 
-        // 수강 날짜 변경 시 수강기간 변화 체크 메서드 필요
-        // 모집 날짜 변경 시 모집 상태 체크 메서드 필요
+        isApplying(course);
+        course.setPeriod(getCoursePeriod(course));
 
         return courseRepository.save(findCourse);
     }
@@ -118,29 +116,35 @@ public class CourseServiceImpl implements CourseService {
     }
 
     // 현재 모집 중인지 확인
-    public LocalDateTime isApplying(Course course) {
-        // 코스를 입력받아서 진행
-        // 현재일 > 모집마감일 = 모집 종료
-        // 현재일 <= 모집마감일 && 일수 차이 < 3 = 마감 임박
-        // 현재일 <= 모집마감일 = 모집 중
-        // 등록일, 마감일 없을 = 등록 예정
+    public void isApplying(Course course) {
         LocalDateTime today = LocalDateTime.now();
-
-        return null;
+        LocalDateTime startApplyDay = course.getApplyStart();
+        LocalDateTime endApplyDay = course.getApplyEnd();
+        /**
+         * 코스를 입력받아서 진행
+         * 현재일 < 모집시작일 = 모집 예정(디폴트)
+         * 현재일 > 모집마감일 = 모집 종료
+         * 현재일 > 모집시작일 && 현재일 <= 모집마감일 = 모집 중
+         * 모집마감일 - 현재일 <= 7 = 마감임박
+        */
+        if(today.compareTo(startApplyDay) > 0 && today.compareTo(endApplyDay) <= 0) {
+            course.setApplyStatus(ApplyStatus.APPLY_ACTIVE);
+        }
+        // 마감일 - 현재일 <= 7
+        if(Math.abs(ChronoUnit.DAYS.between(today, endApplyDay)) <= 7) {
+            course.setApplyStatus(ApplyStatus.APPLY_DEADLINE);
+        }
+        if(today.compareTo(endApplyDay) > 0) {
+            course.setApplyStatus(ApplyStatus.APPLY_END);
+        }
     }
 
     // 전체 수업 일수 계산
-    public LocalDateTime coursePeriod(Course course) {
-        // 코스를 입력받기
-        // 저장된 종료일, 시작일 불러오기
-        // 두 날짜 사이에 시간 구하기
-        // 일로만 표시 => 두 날짜 모두 일로 변환하여 계산
-        LocalDateTime endDate = course.getEndDate();
+    public Long getCoursePeriod(Course course) {
         LocalDateTime startDate = course.getStartDate();
+        LocalDateTime endDate = course.getEndDate();
+        Long period = Math.abs(ChronoUnit.DAYS.between(startDate, endDate));
 
-        return null;
+        return period;
     }
-
-
-
 }

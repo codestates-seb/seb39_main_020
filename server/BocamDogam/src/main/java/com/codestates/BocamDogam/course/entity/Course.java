@@ -1,5 +1,6 @@
 package com.codestates.BocamDogam.course.entity;
 
+import com.codestates.BocamDogam.audit.BaseTimeEntity;
 import com.codestates.BocamDogam.institute.entity.Institute;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class Course extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long courseId;
@@ -48,17 +49,16 @@ public class Course {
     // 수강 기간
     // EndDate - StartDate
     @Column
-    private int period;
+    private long period;
 
     // 모집 인원 규모
     @Column
-    private int scale;
+    private long scale;
 
-    // 수강 비용
-    // 단위는 원
+    // 수강 비용(단위는 원)
     // 후불제이거나 연봉의 x% 같은 경우는?
     @Column
-    private int cost;
+    private long cost;
 
     // 국비 지원 여부
     @Column
@@ -68,10 +68,10 @@ public class Course {
     @Column
     private boolean remote;
 
-    // 모집 상태
-    // 이넘 타입으로 변경이 필요한가?
+    // 모집 상태(enum으로 적용)
+    @Enumerated(value = EnumType.STRING)
     @Column
-    private String ApplyStatus;
+    private ApplyStatus applyStatus = ApplyStatus.APPLY_SCHEDULED;
 
     @ManyToOne
     @JoinColumn(name = "institute_id")
