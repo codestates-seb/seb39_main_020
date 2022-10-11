@@ -55,8 +55,8 @@ export default function BoardView() {
                         <Typography variant="h5" sx={{mb:2}}>{view.title}</Typography>
                         <Grid container justifyContent="space-between">
                             <Grid>
-                                <Typography variant="subtitle2">{view.member_id}</Typography>
-                                <Typography variant="subtitle1">{view.created_date}</Typography>
+                                <Typography variant="subtitle2">{view.memberId}</Typography>
+                                <Typography variant="subtitle1">{view.createdDate}</Typography>
                             </Grid>
                             <Grid>
                             <Typography variant="h5"><ThumbUpIcon/> 0</Typography>
@@ -70,11 +70,11 @@ export default function BoardView() {
                         <Divider sx={{margin:"10px 0"}}/>
                         {comments.map((comment) => { 
                             return <>
-                                <Typography variant="body2" sx={{mb:0.5}}>{comment.member_id}</Typography>
+                                <Typography variant="body2" sx={{mb:0.5}}>{comment.memberId}</Typography>
                                 <Typography variant="body1" sx={{mb:2, minHeight:"25px"}}>{comment.content}</Typography>
                                 <Grid container>
-                                    <Typography sx={{mr:3}} variant="subtitle2">{comment.created_date}</Typography>
-                                    <Typography sx={{mr:3}} variant="subtitle2">추천 {comment.like_count||0}</Typography>
+                                    <Typography sx={{mr:3}} variant="subtitle2">{comment.createdDate}</Typography>
+                                    <Typography sx={{mr:3}} variant="subtitle2">추천 {comment.likeCount||0}</Typography>
                                     <Typography variant="subtitle2">신고</Typography>
                                 </Grid>
                                 <Divider sx={{margin:"10px 0"}}/>
@@ -87,7 +87,7 @@ export default function BoardView() {
                 <Card sx={{mt:3}}>
                     <CardContent>
                     <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
-                        <FormHidden control={control} name="member_id" defaultValue="test" /> 
+                        <FormHidden control={control} name="memberId" defaultValue="test" /> 
                         <FormTextArea 
                             control={control} 
                             fullWidth 
@@ -101,9 +101,13 @@ export default function BoardView() {
                     </form>
                     </CardContent>
                 </Card>
-                
-                <Grid sx={{mt:3}} container justifyContent="flex-end">
-                    <Button variant="outlined" component={RouterLink} to={`/board/${params.board}`}>목록</Button>
+                <Grid container justifyContent="flex-end" sx={{mt:3}} >
+                    <Grid sx={{mr:2}}>
+                        <Button variant="outlined" component={RouterLink} to={`/boardForm/${params.board}/${params.id}`}>수정</Button>
+                    </Grid>
+                    <Grid>
+                        <Button variant="outlined" component={RouterLink} to={`/board/${params.board}`}>목록</Button>
+                    </Grid>
                 </Grid>
             </Container>
         </Container>

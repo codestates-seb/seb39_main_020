@@ -49,11 +49,11 @@ export default function CourseView() {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>모집기간</TableCell>
-                                    <TableCell>{course.apply_start} ~ {course.apply_end}</TableCell>
+                                    <TableCell>{course.applyStart} ~ {course.applyEnd}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>수업기간</TableCell>
-                                    <TableCell>{course.start_date} ~ {course.end_date}</TableCell>
+                                    <TableCell>{course.startDate} ~ {course.endDate}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>교육기관</TableCell>

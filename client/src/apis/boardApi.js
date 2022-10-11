@@ -1,6 +1,6 @@
 import { adelete, aget, apost, aput } from "../configs/axiosConfig";
 
-const targetBE = process.env.REACT_APP_BACKEND_URI+'/main/community'; 
+const targetBE = process.env.REACT_APP_BACKEND_URI+'/main/community/board'; 
 
 const getBoardsApi = (board,payload) => { 
     return aget(`${targetBE}/${board}`,payload);

@@ -50,7 +50,7 @@ export default function InstituteView() {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>수업방식</TableCell>
-                                    <TableCell>{view.study_type}</TableCell>
+                                    <TableCell>{view.studyType}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>홈페이지</TableCell>

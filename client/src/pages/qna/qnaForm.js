@@ -66,7 +66,7 @@ export default function QnaForm() {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <FormHidden control={control} name="member_id" defaultValue="test"/>
+                <FormHidden control={control} name="memberId" defaultValue="test"/>
                 <Button type="submit">등록</Button>
                 <Button component={Link} to={cancelUrl}>취소</Button>
             </form>

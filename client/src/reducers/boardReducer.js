@@ -31,8 +31,8 @@ export const postBoard = createAsyncThunk('BOARD/CREATE_BOARD', (payload,{reject
 });
 
 export const putBoard = createAsyncThunk('BOARD/UPDATE_BOARD', (payload) => {
-  const id = (!!payload?.data && typeof payload.data === 'object') ? payload?.data?.id : 0;
-  return !!(payload) && putBoardApi(id, payload.data).then(() => {
+  const {board, id, data} = payload;
+  return !!(payload) && putBoardApi(board, id, data).then(() => {
     (!!payload.successFn) && payload.successFn();
     return payload;
   });
@@ -71,7 +71,7 @@ const initialState = {
     pageInfo:{}
   },
   view: {
-    id:"",
+    postId:"",
     title:"",
     content:"",
     writer:"",

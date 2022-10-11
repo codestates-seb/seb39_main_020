@@ -46,7 +46,7 @@ const Gnb = () => {
                 <CssBaseline />
                 <Toolbar className={classes.navlinks}>
                     <Typography variant="h4" className={classes.logo} component={RouterLink} to="home">
-                    Home {/* 이미지 컴포넌트 교체필요 */}
+                    부캠도감
                     </Typography>
                 {(sidemenus).map((sidemenu) => {
                     return <Link component={RouterLink} to={sidemenu.path} className={classes.link} key={sidemenu.path}>

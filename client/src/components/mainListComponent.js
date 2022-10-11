@@ -9,20 +9,20 @@ const getBoardProps = (typ) => {
     let boardProp;
     switch(typ) {
         case "institute" :
-            idProp="institute_id";
+            idProp="instituteId";
             titleProp="name";
             hasIcon=true;
             hasComments=false; 
             break;
         case "board" : 
-            idProp="post_id";
+            idProp="postId";
             boardProp="board"
             titleProp="title";
             hasIcon=false;
             hasComments=true; 
             break;
         case "qna" :
-            idProp="question_id";
+            idProp="questionId";
             titleProp="title";
             hasIcon=true;
             hasComments=false; 
@@ -54,7 +54,7 @@ export const MainSchedule = ({course}) => {
             </Typography>
             <Grid container spacing={0}>
                 <Grid xs={3}>개강일</Grid>
-                <Grid xs={9}>{course?.start_date}</Grid>
+                <Grid xs={9}>{course?.startDate}</Grid>
             </Grid>
             <Grid container spacing={0}>
                 <Grid xs={3}>위치</Grid>
@@ -62,14 +62,14 @@ export const MainSchedule = ({course}) => {
             </Grid>
             <Grid container spacing={0}>
                 <Grid xs={3}>교육기간</Grid>
-                <Grid xs={9}>{course?.start_date} ~ {course?.end_date}</Grid>
+                <Grid xs={9}>{course?.startDate} ~ {course?.endDate}</Grid>
             </Grid>
         </CardContent>
     </MainCard> : <MainCard></MainCard>
 }
 
 export const MainListBox = ({typ, datas}) => {
-    datas = (!!datas.map)?datas:[];
+    datas = (!!datas?.map)?datas:[];
     const config = getBoardProps(typ);
     const dataCnt = datas.length;
     const getLink = (data) => {
@@ -96,7 +96,7 @@ export const MainListBox = ({typ, datas}) => {
             datas.map((data, idx) => {
                 const prefix = (config.boardProp)?`[${data[config.boardProp]}]`:'';
                 const title = data[config.titleProp];
-                const suffix = (config.hasComments)?`[${data['comment_count']?data['comment_count']:0}]`:'';
+                const suffix = (config.hasComments)?`[${data['commentCount']?data['commentCount']:0}]`:'';
                 const item = (
                     (idx < mainListSize) && (
                         (idx < mainListSize-1) ? (

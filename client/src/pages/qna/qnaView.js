@@ -56,8 +56,8 @@ export default function QnaView() {
                         <Grid container sx={{display:"flex", mb:3, minHeight:"30px"}}>
                             <Typography variant="body1" component="pre" >{view.content}</Typography>
                         </Grid>
-                        <Typography variant="subtitle1">{view.member_id}</Typography>
-                        <Typography variant="subtitle2">{view.created_date}</Typography> 
+                        <Typography variant="subtitle1">{view.memberId}</Typography>
+                        <Typography variant="subtitle2">{view.createdDate}</Typography> 
                         <Button variant="outlined" size="small">추천</Button>
                         <Button variant="outlined" size="small">신고</Button>
                         <Divider sx={{margin:"10px 0"}}/>
@@ -69,7 +69,7 @@ export default function QnaView() {
                             </Typography>
                             <Typography variant="h5">{a.content}</Typography>
                             </div>
-                            <Typography variant="subtitle2">{a.created_date}</Typography> 
+                            <Typography variant="subtitle2">{a.createdDate}</Typography> 
                             <Divider sx={{margin:"10px 0"}}/>
                         </>;
                         })}
@@ -79,7 +79,7 @@ export default function QnaView() {
                 <Card sx={{mt:3}}>
                     <CardContent>
                     <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
-                        <FormHidden control={control} name="member_id" defaultValue="test" /> 
+                        <FormHidden control={control} name="memberId" defaultValue="test" /> 
                         <FormTextArea 
                             control={control} 
                             fullWidth 

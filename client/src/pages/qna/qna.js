@@ -42,10 +42,10 @@ const Qna = () => {
                                     {(!!data) ? (data).map((item,idx) => {
                                     return <TableRow key={idx}>
                                         <TableCell>
-                                            <Link component={RouterLink} to={`/qna/${item.question_id}`}>{item.title}</Link>
+                                            <Link component={RouterLink} to={`/qna/${item.questionId}`}>{item.title}</Link>
                                         </TableCell>
-                                        <TableCell>{item.created_date}</TableCell>
-                                        <TableCell>{item.like_count}</TableCell>                                                                 
+                                        <TableCell>{item.createdDate}</TableCell>
+                                        <TableCell>{item.likeCount}</TableCell>                                                                 
                                     </TableRow>
                                     }) : <TableRow><TableCell colSpan={4}>검색된 결과가 없습니다.</TableCell></TableRow>
                                     }

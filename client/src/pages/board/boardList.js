@@ -51,10 +51,10 @@ const Board = () => {
                             {(!!data) ? (data).map((item,idx) => {
                             return <TableRow key={idx}>
                                 <TableCell>
-                                    <Link component={RouterLink} to={`/board/${params.board}/${item.post_id}`}>{item.title}</Link>
+                                    <Link component={RouterLink} to={`/board/${params.board}/${item.postId}`}>{item.title}</Link>
                                 </TableCell>
-                                <TableCell>{item.member_id}</TableCell>
-                                <TableCell>{item.created_date}</TableCell>
+                                <TableCell>{item.memberId}</TableCell>
+                                <TableCell>{item.createdDate}</TableCell>
                                 <TableCell>{item.regdate}</TableCell>                                                                 
                             </TableRow>
                             }) : <TableRow><TableCell colSpan={4}>검색된 결과가 없습니다.</TableCell></TableRow>

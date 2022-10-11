@@ -45,13 +45,13 @@ const Institute = () => {
                             {(!!data) ? (data).map((item,idx) => {
                             return <TableRow key={idx}>
                                 <TableCell>
-                                    <Link component={RouterLink} to={`/institute/INSTITUTE/${item.institute_id}`}>{item.name}</Link>
+                                    <Link component={RouterLink} to={`/institute/INSTITUTE/${item.instituteId}`}>{item.name}</Link>
                                 </TableCell>
                                 <TableCell>{item.description}</TableCell>
                                 <TableCell>
                                     <RatingStar rate={item.score}/>
                                 </TableCell>
-                                <TableCell>{item.create_date}</TableCell>                                                                 
+                                <TableCell>{item.createDate}</TableCell>                                                                 
                             </TableRow>
                             }) : <TableRow><TableCell colSpan={4}>검색된 결과가 없습니다.</TableCell></TableRow>
                             }

@@ -35,7 +35,7 @@ export default function ReviewView() {
     },[dispatch, params, id]);
 
     const getCourseOptions = courses.map((c) => {
-        return {value : c.course_id, text: c.name}
+        return {value : c.courseId, text: c.name}
     });
 
     const onSubmit= (data) => {
@@ -63,7 +63,7 @@ export default function ReviewView() {
                     <CardContent>
                         <List>
                             {(reviews.map) && reviews.map((review)=>{
-                            return <><ListItem key={review.review_id}>
+                            return <><ListItem key={review.reviewId}>
                                 <Grid container>
                                     <Grid item xs={9}>{review.member} ({review.course})</Grid> 
                                     <Grid item xs={3}alignContent="right"><RatingStar rate={review.score}/></Grid>
@@ -78,7 +78,7 @@ export default function ReviewView() {
                 <Card>
                     <CardContent>
                     <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
-                        <FormHidden control={control} name="member_id" defaultValue="test" />
+                        <FormHidden control={control} name="memberId" defaultValue="test" />
                         <FormHidden control={control} name="rating" defaultValue={rate} value={rate}/>
                         <FormSelect control={control} label="과목" name="course" options={getCourseOptions}></FormSelect> 
                         <FormTextArea 

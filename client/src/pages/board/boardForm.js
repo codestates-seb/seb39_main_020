@@ -33,16 +33,17 @@ export default function BoardForm() {
                 id: params.id,
                 data,
                 successFn:()=>{
+                    dispatch(initView());
                     navigate(cancelUrl,{replace:true});
                     snackbar.open("수정을 성공하였습니다.");
                 }
             }));
         } else if(mode === 'CREATE') {
-            dispatch(initList());
             dispatch(postBoard({
                 board: params.board,
                 data,
                 successFn:()=>{
+                    dispatch(initList());
                     navigate(cancelUrl,{replace:true});
                     snackbar.open("등록을 성공하였습니다.");
                 }
@@ -88,8 +89,8 @@ export default function BoardForm() {
                         </TableRow>
                     </TableBody>
                 </Table>
-                <FormHidden control={control} name="member_id" defaultValue="test"/>
-                <Button type="submit">등록</Button>
+                <FormHidden control={control} name="memberId" defaultValue="test"/>
+                <Button type="submit">{(mode==='CREATE')?'등록':'수정'}</Button>
                 <Button component={Link} to={cancelUrl}>취소</Button>
             </form>
         </Container>

@@ -40,11 +40,10 @@ const aput = (url, data, successFn, failFn, newProp) => {
     return axios({
         ...axiosConfig, 
         url,
-        method : "put",
+        method : "patch",
         data,
         newProp
     }).then((res) => {
-        console.log(res)
         (!!successFn) && successFn();
         return res.data;
     }).catch((err) => {
