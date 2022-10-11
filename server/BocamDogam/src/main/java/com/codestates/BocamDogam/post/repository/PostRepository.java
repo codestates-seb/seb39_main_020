@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query(value = "SELECT * FROM POST WHERE BOARD = :board", nativeQuery = true)
+    @Query(value = "SELECT * FROM POST WHERE BOARD = :board ORDER BY LIKE_COUNT DESC, CREATED_DATE DESC", nativeQuery = true)
     Page<Post> findByBoard(String board, Pageable pageable);
-
+    @Query(value = "SELECT * FROM POST ORDER BY LIKE_COUNT DESC, CREATED_DATE DESC", nativeQuery = true)
+    Page<Post> findAllOrderByLikeCountAndCreatedDate(Pageable pageable);
 }

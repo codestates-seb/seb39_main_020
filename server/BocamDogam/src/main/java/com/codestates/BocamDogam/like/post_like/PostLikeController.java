@@ -46,7 +46,7 @@ public class PostLikeController {
         post.setLikeCount(postLikeService.findPostLikes(postId));
         postRepository.save(post);
 
-        return new ResponseEntity(postLike.is_liked(), HttpStatus.OK);
+        return new ResponseEntity(postLike.isLiked(), HttpStatus.OK);
     }
 
     @GetMapping("/main/community/like/{post-id}")

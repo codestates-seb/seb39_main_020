@@ -61,11 +61,9 @@ public class PostServiceImpl implements PostService {
     }
 
     public Page<Post> findLikedPosts(String boardName) {
-        Sort sort = Sort.by("like_Count", "created_Date").descending();
-        Sort sort2 = Sort.by("likeCount", "createdDate").descending();
-        Pageable pageable = PageRequest.of(0, 5, sort).withPage(0);
-        Pageable pageable2 = PageRequest.of(0, 5, sort2).withPage(0);
-        if(boardName == "ALL") return postRepository.findAll(pageable2);
+        Pageable pageable = PageRequest.of(0, 5).withPage(0);
+        if(boardName == "ALL")
+            return postRepository.findAllOrderByLikeCountAndCreatedDate(pageable);
         return postRepository.findByBoard(boardName, pageable);
     }
 

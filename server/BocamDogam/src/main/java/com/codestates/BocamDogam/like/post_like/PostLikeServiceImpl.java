@@ -29,12 +29,12 @@ public class PostLikeServiceImpl implements PostLikeService {
             PostLike postLike = new PostLike();
             postLike.setMember(member);
             postLike.setPost(post);
-            postLike.set_liked(true);
+            postLike.setLiked(true);
             return postLikeRepository.save(postLike);
 
         } else {
             PostLike postLike = postLikeRepository.findByMemberIdAndPostId(member.getMemberId(), post.getPostId());
-            postLike.set_liked(!postLike.is_liked());
+            postLike.setLiked(!postLike.isLiked());
             return postLikeRepository.save(postLike);
         }
     }
@@ -42,7 +42,7 @@ public class PostLikeServiceImpl implements PostLikeService {
     public int findPostLikes(Long postId) {
         List<PostLike> postLikes = postLikeRepository.findByPostId(postId);
         int totalLikes = Math.toIntExact(postLikes.stream()
-                .filter(postLike -> postLike.is_liked() == true)
+                .filter(postLike -> postLike.isLiked() == true)
                 .count());
         return totalLikes;
     }

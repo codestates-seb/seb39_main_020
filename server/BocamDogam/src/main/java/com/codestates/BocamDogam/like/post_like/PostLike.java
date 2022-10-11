@@ -30,6 +30,6 @@ public class PostLike extends BaseTimeEntity {
     private Post post;
 
     @Column(nullable = false)
-    private boolean is_liked;
+    private boolean isLiked;
 
 }
