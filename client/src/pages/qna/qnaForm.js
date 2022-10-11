@@ -1,16 +1,14 @@
-import { Button, Container, Grid, Input, Table, TableBody, TableCell, TableRow } from "@mui/material";
-import { queryAllByAltText } from "@testing-library/react";
+import { Button, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams, useNavigate, useOutletContext } from "react-router-dom";
-import { BoardTab } from "../../components/boardTabComponent";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { MainTitleText } from "../../components/commonComponent";
 import { FormHidden, FormText, FormTextArea } from "../../components/formComponents";
-import { fetchBoard, initList, initView, postBoard, putBoard } from "../../reducers/boardReducer";
+import { postQuestion } from "../../reducers/qnaReducer";
 
-export default function BoardForm() {
-    const params = useParams();
+
+export default function QnaForm() {
     const navigate = useNavigate();
 
     const { view, error, loading } = useSelector((state) => state.board);
@@ -18,47 +16,27 @@ export default function BoardForm() {
     /* 공통 오류/로딩 처리 시작*/
     const { snackbar, loader } = useOutletContext();
     useEffect(() => loader.setLoading(loading), [loader, loading]);
-    useEffect(() => {if(!!error) snackbar.open(error, 'error')}, [error, snackbar]);
+    useEffect(() => snackbar.open(error, 'danger'), [error, snackbar]);
     /* 공통 오류/로딩 처리 끝 */
 
-    const mode = (params.id) ? 'UPDATE' : 'CREATE';
-    const cancelUrl = (mode === 'UPDATE') ? `/board/${params.board}/${params.id}` : `/board/${params.board}`
+    const cancelUrl = `/qna`;
 
     const dispatch = useDispatch();
     const { handleSubmit, control } = useForm();
     const onSubmit  = (data) => {
-        if (mode === 'UPDATE') {
-            dispatch(putBoard({
-                board: params.board,
-                id: params.id,
-                data,
-                successFn:()=>{
-                    navigate(cancelUrl,{replace:true});
-                    snackbar.open("수정을 성공하였습니다.");
-                }
-            }));
-        } else if(mode === 'CREATE') {
-            dispatch(initList());
-            dispatch(postBoard({
-                board: params.board,
-                data,
-                successFn:()=>{
-                    navigate(cancelUrl,{replace:true});
-                    snackbar.open("등록을 성공하였습니다.");
-                }
-            }));
-        }
+        console.log(data)
+        dispatch(postQuestion({
+            data,
+            successFn:()=>{
+                navigate(cancelUrl,{replace:true});
+                snackbar.open("등록을 성공하였습니다.");
+            }
+        }));
     }
     
-    useEffect(() => {
-        (mode === 'UPDATE') && dispatch(fetchBoard({id:params.id}))       
-    },[dispatch, params, mode]);
-    
     return (
-        <Container>
-            <MainTitleText>커뮤니티</MainTitleText>
-            <BoardTab curr={params.board}/>
-
+        <div>
+            <MainTitleText>질문/답변</MainTitleText>
             <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Table>
                     <TableBody>
@@ -92,6 +70,6 @@ export default function BoardForm() {
                 <Button type="submit">등록</Button>
                 <Button component={Link} to={cancelUrl}>취소</Button>
             </form>
-        </Container>
+        </div>
     )
 }

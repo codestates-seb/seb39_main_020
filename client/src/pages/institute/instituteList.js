@@ -1,16 +1,16 @@
-import { Button, Container, Grid, Link, Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
-import { useLocation, Link as RouterLink, useOutletContext } from "react-router-dom";
+import { Container, Grid, Link, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Link as RouterLink, useOutletContext } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchInstitutes } from "../../reducers/instituteReducer";
 import PagingLayout from "../../components/pagingComponent";
 import { RatingStar } from "../../components/starComponent";
-import { StarBorder } from '@mui/icons-material';
+import { MainTitleText } from "../../components/commonComponent";
 
 /* 게시판 목록 페이지 */
 const Institute = () => {
 
-    const {list : {items, paging}, error, loading} = useSelector((state) => state.institute);
+    const {list : {data, pageInfo}, error, loading} = useSelector((state) => state.institute);
     
     /* 공통 오류/로딩 처리 시작 */
     const { snackbar, loader } = useOutletContext();
@@ -19,17 +19,17 @@ const Institute = () => {
     /* 공통 오류/로딩 처리 끝 */
 
     //페이징처리 시작
-    const [boardOffset, setBoardOffset] = useState(paging?.offset || 0)
+    const [page, setPage] = useState(pageInfo?.page || 1)
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(fetchInstitutes({offset:boardOffset, limit:10}))
-    },[dispatch, boardOffset]);
+        dispatch(fetchInstitutes({page, size:10}))
+    },[dispatch, page]);
     //페이징처리 끝
     
     return (
             <Container>
-                <Typography variant="h5">교육기관정보</Typography>
+                <MainTitleText>교육기관정보</MainTitleText>
 
                 <Grid container>
                     <Table>
@@ -42,28 +42,24 @@ const Institute = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {(!!items) ? (items).map((item,idx) => {
+                            {(!!data) ? (data).map((item,idx) => {
                             return <TableRow key={idx}>
                                 <TableCell>
-                                    <Link component={RouterLink} to={`/board/${item.id}`}>{item.title}</Link>
+                                    <Link component={RouterLink} to={`/institute/INSTITUTE/${item.institute_id}`}>{item.name}</Link>
                                 </TableCell>
-                                <TableCell>{item.writer}</TableCell>
+                                <TableCell>{item.description}</TableCell>
                                 <TableCell>
-                                    <RatingStar rate={3}/>
+                                    <RatingStar rate={item.score}/>
                                 </TableCell>
-                                <TableCell>{item.regdate}</TableCell>                                                                 
+                                <TableCell>{item.create_date}</TableCell>                                                                 
                             </TableRow>
                             }) : <TableRow><TableCell colSpan={4}>검색된 결과가 없습니다.</TableCell></TableRow>
                             }
                         </TableBody>
-                        <TableFooter>
-                            <TableRow >
-                                <TableCell colSpan={4} align="center">
-                                    <PagingLayout paging={paging} setter={setBoardOffset} /> 
-                                </TableCell>
-                            </TableRow>
-                        </TableFooter>
                     </Table>
+                </Grid>
+                <Grid container justifyContent="center" sx={{mt:2}}>
+                    <PagingLayout paging={pageInfo} setter={setPage} />
                 </Grid>
             </Container>
     );

@@ -1,53 +1,111 @@
-import { Button, Container, Divider, Card, Typography, CardContent } from "@mui/material";
-import QueryString from "qs";
+import { Button, Container, Divider, Card, Typography, CardContent, Grid } from "@mui/material";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link as RouterLink, useOutletContext, useParams } from "react-router-dom";
 import { BoardTab } from "../../components/boardTabComponent";
-import { deleteBoard, fetchBoard, initView } from "../../reducers/boardReducer";
+import { MainTitleText } from "../../components/commonComponent";
+import { FormHidden, FormTextArea } from "../../components/formComponents";
+import { fetchBoard, fetchComments, initComments, initView, postBoard, postComments } from "../../reducers/boardReducer";
 
 export default function BoardView() {
     
     const params = useParams();
-    const navigate = useNavigate();
+    const { handleSubmit, control } = useForm();
 
     const dispatch = useDispatch();
-    const {view, loading} = useSelector((state) => state.board);
+    const {view, comments, loading, error} = useSelector((state) => state.board);
 
-    //현재 게시판 타입 받아오기
-    const location = useLocation();
-    const query = QueryString.parse(location.search, {
-        ignoreQueryPrefix: true
-    });
+    /* 공통 오류/로딩 처리 시작*/
+    const { snackbar, loader } = useOutletContext();
+    useEffect(() => loader.setLoading(loading), [loader, loading]);
+    useEffect(() => snackbar.open(error, 'danger'), [error, snackbar]);
+    /* 공통 오류/로딩 처리 끝 */
+
+    const onSubmit= (data) => {
+        dispatch(postComments({
+            board: params.board,
+            id: params.id,
+            data,
+            successFn:()=>{
+                dispatch(fetchComments({board:params.board, id:params.id}));
+                snackbar.open("등록을 성공하였습니다.");
+            }
+        }));
+    }
 
     useEffect(() => {
-        dispatch(fetchBoard({id:params.id}));
-        return () => {dispatch(initView())}
-    },[dispatch, params]);
+        dispatch(fetchBoard({board:params.board,id:params.id}));
+        dispatch(fetchComments({board:params.board,id:params.id}));
+        return () => {
+            dispatch(initView());
+            dispatch(initComments());
+        }
+    },[dispatch, params.board, params.id]);
 
     return (
         <Container>
-            <Typography variant="h5">커뮤니티</Typography>
-            <BoardTab curr={query.type}/>
+            <MainTitleText>커뮤니티</MainTitleText>
+            <BoardTab curr={params.board}/>
             
             <Container>
                 <Card>
                     <CardContent>
-                        <Typography variant="h5">{view.title}</Typography>
-                        <Typography variant="subtitle2">{view.writer}</Typography>
-                        <Typography variant="subtitle1">{view.regdate}</Typography>
+                        <Typography variant="h5" sx={{mb:2}}>{view.title}</Typography>
+                        <Grid container justifyContent="space-between">
+                            <Grid>
+                                <Typography variant="subtitle2">{view.member_id}</Typography>
+                                <Typography variant="subtitle1">{view.created_date}</Typography>
+                            </Grid>
+                            <Grid>
+                            <Typography variant="h5"><ThumbUpIcon/> 0</Typography>
+                            </Grid>
+                        </Grid>
+                        
                         <Divider sx={{margin:"5px 0"}}/>
-                        <Typography variant="body2">{view.content}</Typography>
-                        <Button variant="outlined" size="small">도움됐어요</Button>
+                        <Typography variant="body1" component="pre" sx={{mb:3, minHeight:"50px"}}>{view.content}</Typography>
+                        <Button variant="outlined" size="small" sx={{mr:1}}>도움됐어요</Button>
                         <Button variant="outlined" size="small">신고하기</Button>
                         <Divider sx={{margin:"10px 0"}}/>
-                        {/* 댓글 컴포넌트 작업예정 */}
+                        {comments.map((comment) => { 
+                            return <>
+                                <Typography variant="body2" sx={{mb:0.5}}>{comment.member_id}</Typography>
+                                <Typography variant="body1" sx={{mb:2, minHeight:"25px"}}>{comment.content}</Typography>
+                                <Grid container>
+                                    <Typography sx={{mr:3}} variant="subtitle2">{comment.created_date}</Typography>
+                                    <Typography sx={{mr:3}} variant="subtitle2">추천 {comment.like_count||0}</Typography>
+                                    <Typography variant="subtitle2">신고</Typography>
+                                </Grid>
+                                <Divider sx={{margin:"10px 0"}}/>
+                            </>;
+                        })}
                     </CardContent>
                 </Card>
+
+                
+                <Card sx={{mt:3}}>
+                    <CardContent>
+                    <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
+                        <FormHidden control={control} name="member_id" defaultValue="test" /> 
+                        <FormTextArea 
+                            control={control} 
+                            fullWidth 
+                            name="content" 
+                            placeholder="댓글을 남겨보세요."
+                        />
+                        <Grid container justifyContent="flex-end" sx={{mt:2}}>
+                            <Button variant="outlined" type="submit">등록</Button>
+                        </Grid>
+
+                    </form>
+                    </CardContent>
+                </Card>
+                
+                <Grid sx={{mt:3}} container justifyContent="flex-end">
+                    <Button variant="outlined" component={RouterLink} to={`/board/${params.board}`}>목록</Button>
+                </Grid>
             </Container>
-            {/*<Button component={Link} to={`/boardForm/${params.id}`}>수정</Button>
-            <Button onClick={() => {navigate("/board"); dispatch(deleteBoard({id:params.id}))}}>삭제</Button>
-    <Button component={Link} to={`/board`}>리스트로</Button>*/}
         </Container>
     )
 }

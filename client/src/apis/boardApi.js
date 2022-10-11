@@ -1,28 +1,43 @@
 import { adelete, aget, apost, aput } from "../configs/axiosConfig";
 
-const targetBE =
-  "http://cs-project-020.czj9etptcqzw.ap-northeast-2.rds.amazonaws.com:3306";
+const targetBE = process.env.REACT_APP_BACKEND_URI+'/main/community'; 
 
-const getBoardsApi = (payload) => {
-  return aget(`${targetBE}/board`, payload);
+const getBoardsApi = (board,payload) => { 
+    return aget(`${targetBE}/${board}`,payload);
 };
 
-const getBoardApi = (id) => {
-  return aget(`${targetBE}/board/${id}`);
+const getBoardMainApi = () => { 
+    return aget(`${targetBE}/boardMain`);
 };
 
-const postBoardApi = (payload) => {
-  return apost(`${targetBE}/board`, payload);
-};
+const getBoardApi = (board,id) => {
+    return aget(`${targetBE}/${board}/${id}`)
+}
 
-const putBoardApi = (id, payload) => {
-  delete payload.id;
-  console.log(id, payload);
-  return aput(`${targetBE}/board/${id}`, payload);
-};
+const getMainboardsApi = () => {
+    return aget(`${targetBE}/main`);
+}
+
+const postBoardApi = (board,payload) => {
+    return apost(`${targetBE}/${board}`,payload)
+}
+
+const putBoardApi = (board, id, payload) => {
+    delete payload.id;
+    console.log(id,payload)
+    return aput(`${targetBE}/${board}/${id}`,payload)
+}
 
 const deleteBoardApi = (id) => {
-  return adelete(`${targetBE}/board/${id}`);
+    return adelete(`${targetBE}/${id}`)
+}
+
+const getCommentsApi = (board,id) => { 
+    return aget(`${targetBE}/${board}/${id}/comments`);
 };
 
-export { getBoardsApi, getBoardApi, postBoardApi, putBoardApi, deleteBoardApi };
+const postCommentsApi = (board,id,payload) => {
+    return apost(`${targetBE}/${board}/${id}/comments`,payload);
+}
+
+export {getBoardsApi, getBoardApi, getMainboardsApi,getBoardMainApi, postBoardApi, putBoardApi, deleteBoardApi, getCommentsApi, postCommentsApi };

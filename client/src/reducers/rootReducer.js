@@ -1,10 +1,10 @@
 import boardReducer from './boardReducer'
-import faqReducer from './faqReducer';
+import qnaReducer from './qnaReducer';
 import instituteReducer from './instituteReducer';
 
 const reducer = {
     "board" : boardReducer,
-    "faq" : faqReducer,
+    "qna" : qnaReducer,
     "institute" : instituteReducer,
 }
 

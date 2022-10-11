@@ -1,90 +1,98 @@
 import Home from "../pages/home";
-import Institute from "../pages/institute/instituteList";
-import Board from "../pages/board/boardList";
-import Faq from "../pages/faq/faq";
-import BoardView from "../pages/board/boardView";
 import Layout from "../layout/layout";
-import BoardForm from "../pages/board/boardForm";
+import Institute from "../pages/institute/instituteList";
+import InstituteView from "../pages/institute/instituteView";
+import CourseView from "../pages/institute/courseView";
+import ReviewView from "../pages/institute/reviewView";
 import BoardMain from "../pages/board/boardMain";
-import FaqView from "../pages/faq/faqView";
-import Login from "../pages/User/login";
-import Register from "../pages/User/register";
+import Board from "../pages/board/boardList";
+import BoardView from "../pages/board/boardView";
+import BoardForm from "../pages/board/boardForm";
+import Qna from "../pages/qna/qna";
+import QnaView from "../pages/qna/qnaView";
+import QnaForm from "../pages/qna/qnaForm";
 
-const routes = [
-  {
+const routes = [{
     path: "/",
     element: <Layout />,
     children: [
-      {
+    {
         index: true,
-        element: <Home />,
-      },
-      {
-        path: "/",
+        element : <Home />
+    },
+    { 
+        path: "home",
         name: "Home",
         icon: "accessibility",
-        element: <Home />,
-      },
-      {
-        path: "main/institutes",
+        element : <Home />
+    },
+    { 
+        path: "institute",
         name: "교육기관정보",
         icon: "accessibility",
         visible: true,
-        element: <Institute />,
-      },
-      {
-        path: "boardForm/",
+        element : <Institute />
+    },
+    {
+        path: "institute/INSTITUTE/:id",
+        name: "교육기관정보",
+        element : <InstituteView />
+    },
+    {
+        path: "institute/COURSE/:id",
+        name: "수강과정정보",
+        element : <CourseView />
+    },
+    {
+        path: "institute/REVIEW/:id",
+        name: "수강후기",
+        element : <ReviewView />
+    },
+    {
+        path: "boardForm/:board",
         name: "게시판등록",
-        element: <BoardForm />,
-      },
-      {
-        path: "boardForm/:id",
+        element : <BoardForm />
+    },
+    {
+        path: "boardForm/:board/:id",
         name: "게시판수정",
-        element: <BoardForm />,
-      },
-      {
-        path: "board",
-        name: "게시판",
-        visible: false,
-        element: <Board />,
-      },
-      {
-        path: "community",
+        element : <BoardForm />
+    },
+    {
+        path: "boardMain",
         name: "커뮤니티",
         icon: "notes",
         visible: true,
-        element: <BoardMain />,
-      },
-      {
-        path: "board/:id",
+        element : <BoardMain />
+    },
+    {
+        path: "board/:board/:id",
         name: "커뮤니티",
-        element: <BoardView />,
-      },
-      {
-        path: "main/qna",
+        visible: false,
+        element : <BoardView />
+    },
+    {
+        path: "board/:board",
+        name: "게시판",
+        visible: false,
+        element : <Board/>
+    },
+    {
+        path: "qna",
         name: "질문/답변",
         visible: true,
         icon: "question_answer",
-        element: <Faq />,
-      },
-      {
-        path: "main/qna/:id",
+        element : <Qna />
+    },
+    {
+        path: "qna/:id",
         name: "질문/답변",
-        element: <FaqView />,
-      },
-      {
-        path: "login",
-        name: "로그인",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        name: "회원가입",
-        element: <Register />,
-      },
-    ],
-  },
-
-];
+        element : <QnaView />
+    },{
+        path: "qnaForm",
+        name: "질문/답변",
+        element : <QnaForm />
+    },]
+}];
 
 export default routes;
