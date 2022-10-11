@@ -35,7 +35,7 @@ public class InstituteController {
     }
 
     // 교육기관 조회 요청
-    @GetMapping("/main/institutes/{institute-id}")
+    @GetMapping("/{institute-id}")
     public ResponseEntity getInstitute(@PathVariable("institute-id") @Positive Long instituteId) {
         Institute response = instituteService.findInstitute(instituteId);
 
@@ -44,7 +44,7 @@ public class InstituteController {
     }
 
     // 모든 교육기관 조회 요청
-    @GetMapping("/main/institutes")
+    @GetMapping
     public ResponseEntity getInstitutes(@Positive @RequestParam int page,
                                         @Positive @RequestParam int size) {
         Page<Institute> pageInstitutes = instituteService.findInstitutes(page - 1, size);
@@ -57,7 +57,7 @@ public class InstituteController {
 
     // 교육기관 수정 요청
     // 향후 별도의 입력폼이 생길 경우 유저의 권한(어드민)을 체크하여 입력하도록 수정
-    @PatchMapping("/main/institutes/{institute-id}")
+    @PatchMapping("/{institute-id}")
     public ResponseEntity patchInstitute(@PathVariable("institute-id") @Positive Long instituteId,
                                          @RequestBody InstituteDto.Patch requestBody) {
         requestBody.setInstituteId(instituteId);
@@ -69,7 +69,7 @@ public class InstituteController {
     }
 
     // 교육기관 삭제 요청
-    @DeleteMapping("/main/institutes/{institute-id}")
+    @DeleteMapping("/{institute-id}")
     public ResponseEntity deleteInstitute(@PathVariable("institute-id") Long instituteId) {
         instituteService.deleteInstitute(instituteId);
 
