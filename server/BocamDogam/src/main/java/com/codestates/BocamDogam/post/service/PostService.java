@@ -12,6 +12,7 @@ public interface PostService {
     Post findPost(Long postId);
 
     Page<Post> findPosts(int page, int size, String boardName);
+    Page<Post> findLikedPosts(String boardName);
 
     void deletePost(Long postId);
 

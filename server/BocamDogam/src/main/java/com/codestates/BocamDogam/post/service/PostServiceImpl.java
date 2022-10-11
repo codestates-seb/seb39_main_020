@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -44,14 +45,25 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post findPost(Long postId) {
+        // 개별 조회시마다 조회수 1 증가
+        Post post = findVerifiedPost(postId);
+        post.setView(post.getView()+1);
+        postRepository.save(post);
         return findVerifiedPost(postId);
     }
 
     @Override
     public Page<Post> findPosts(int page, int size, String boardName) {
         Pageable pageable = PageRequest.of(page, size,
-                Sort.Direction.DESC, "board");
+                Sort.Direction.DESC, "board", "createdDate");
         if(boardName == "ALL") return postRepository.findAll(pageable);
+        return postRepository.findByBoard(boardName, pageable);
+    }
+
+    public Page<Post> findLikedPosts(String boardName) {
+        Pageable pageable = PageRequest.of(0, 5).withPage(0);
+        if(boardName == "ALL")
+            return postRepository.findAllOrderByLikeCountAndCreatedDate(pageable);
         return postRepository.findByBoard(boardName, pageable);
     }
 
