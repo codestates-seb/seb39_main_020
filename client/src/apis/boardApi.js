@@ -18,8 +18,9 @@ const getMainboardsApi = () => {
     return aget(`${targetBE}/main`);
 }
 
+//write추가
 const postBoardApi = (board,payload) => {
-    return apost(`${targetBE}/${board}`,payload)
+    return apost(`${targetBE}/${board}/write`,payload)
 }
 
 const putBoardApi = (board, id, payload) => {
