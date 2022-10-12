@@ -246,7 +246,6 @@ sketch
 *.code-workspace
 
 ### Environment Variable ###
-.env
 *.properties
 *.yml
 *.yaml
