@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosConfig = {
-
+    headers:{Authorization:'token'}
 }
 
 const aget = (url, data, successFn, failFn, newProp) => {

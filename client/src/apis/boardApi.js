@@ -22,6 +22,7 @@ const getMainboardsApi = () => {
 const postBoardApi = (board,payload) => {
     return apost(`${targetBE}/${board}/write`,payload)
 }
+//
 
 const putBoardApi = (board, id, payload) => {
     delete payload.id;
