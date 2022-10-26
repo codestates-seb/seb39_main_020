@@ -26,7 +26,6 @@ public class InstituteServiceImpl implements InstituteService {
     private final ReviewRepository reviewRepository;
 
 
-    @Transactional
     @Override
     public Institute createInstitute(Institute institute) {
         verifyExistName(institute.getName());
