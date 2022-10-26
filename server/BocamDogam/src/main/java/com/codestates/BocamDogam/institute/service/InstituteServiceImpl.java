@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class InstituteServiceImpl implements InstituteService {
     private final ReviewRepository reviewRepository;
 
 
+    @Transactional
     @Override
     public Institute createInstitute(Institute institute) {
         verifyExistName(institute.getName());
@@ -42,8 +44,9 @@ public class InstituteServiceImpl implements InstituteService {
     public Page<Institute> findInstitutes(int page, int size) {
 
         return instituteRepository.findAll(PageRequest.of(page, size,
-                Sort.by("instituteId").ascending()));
+                Sort.by("instituteId").descending()));
                 // 소팅을 등록일 기준 최신순으로 해야할 수 있음
+                // 사이즈의 수를 늘려서 한페이지에 보이도록
     }
 
     @Override
