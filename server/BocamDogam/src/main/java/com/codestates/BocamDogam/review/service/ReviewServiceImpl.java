@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final InstituteService instituteService;
 
 
+    @Transactional
     @Override
     public Review createReview(Review review) {
         // 리뷰 작성 시 검증된 사람만 리뷰를 입력할 수 있도록 조정 필요
@@ -51,8 +53,8 @@ public class ReviewServiceImpl implements ReviewService {
     public Page<Review> findReviews(int page, int size) {
 
         return reviewRepository.findAll(PageRequest.of(page, size,
-                Sort.by("reviewId").descending()));
-                // 생성일 기준으로 해야하나?
+                Sort.by("createdDate").descending()));
+                // 생성일 기준으로 변경
     }
 
     @Override
