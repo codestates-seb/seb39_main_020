@@ -18,13 +18,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3UploadService {
     private final AmazonS3Client amazonS3Client;
+    private final S3UploadRepository s3UploadRepository;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {
         // MultipartFile -> File
         File convertFile = convert(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("file convert error")); // 파일을 변환할 수 없으면 에러
+                .orElseThrow(() -> new IllegalArgumentException("file convert error"));
+                // 파일을 변환할 수 없으면 에러
 
         // S3에 저장할 파일명
         String fileName = dirName + "/" + UUID.randomUUID() + "_" + convertFile.getName();
@@ -32,6 +35,10 @@ public class S3UploadService {
         // S3에 파일 업로드
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, convertFile).withCannedAcl(CannedAccessControlList.PublicRead));
         String uploadImageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+
+        // DB에 저장
+        S3UploadEntity s3UploadEntity = new S3UploadEntity(fileName, uploadImageUrl);
+        s3UploadRepository.save(s3UploadEntity);
 
         // 로컬 파일 삭제
         convertFile.delete();
@@ -47,8 +54,10 @@ public class S3UploadService {
     // 파일 convert 후 로컬에 업로드
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
-        if (convertFile.createNewFile()) { // 바로 위에서 지정한 경로에 File이 생성됨 (경로가 잘못되었다면 생성 불가능)
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) { // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
+        // 바로 위에서 지정한 경로에 File이 생성됨(경로가 잘못되었다면 생성 불가능)
+        if (convertFile.createNewFile()) {
+            // FileOutputStream 데이터를 파일에 바이트 스트림으로 저장하기 위함
+            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
             }
             return Optional.of(convertFile);

@@ -16,7 +16,6 @@
 //    private final S3ImageService s3ImageService;
 //
 //
-//
 //    @ApiOperation(value = "Amazon S3에 이미지 업로드", notes = "Amazon S3에 이미지 업로드 ")
 //    @PostMapping("/image")
 //    public ResponseEntity<List<String>> uploadImage(@ApiParam(value="img 파일들(여러 파일 업로드 가능)", required = true) @RequestPart List<MultipartFile> multipartFile) {
