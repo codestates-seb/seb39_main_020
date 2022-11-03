@@ -1,7 +1,8 @@
 import { AppBar, CssBaseline, Link, Toolbar, Typography, useTheme } from "@mui/material";
 import { makeStyles } from 'tss-react/mui';
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import routes from "../configs/rootRoutes";
+import { useEffect } from "react";
 
 const useStyles = makeStyles()((theme) => ({
     navlinks: {
@@ -33,13 +34,17 @@ const useStyles = makeStyles()((theme) => ({
     },
   }));
 
-const Gnb = () => {
+const Gnb = (props) => {
     const theme = useTheme();
     const { classes } = useStyles(theme);
-
+    const { isLogin } = props;
     const sidemenus = routes[0].children.filter((ch)=>{
         return ch.visible;
     });
+
+    useEffect(()=> {
+      console.log("gnb",isLogin);
+    },[isLogin]);
 
     return (
             <AppBar position="static">
@@ -53,12 +58,24 @@ const Gnb = () => {
                     {sidemenu.name}
                     </Link>
                 })}
-                <Link to="로그인" className={classes.fixedLink} key="login">
-                로그인
-                </Link>
-                <Link to="회원가입" className={classes.fixedLink} key="join">
-                회원가입
-                </Link>
+                {(isLogin)?
+                <>
+                  <Link to="로그인" className={classes.fixedLink} key="login">
+                  로그인
+                  </Link>
+                  <Link to="회원가입" className={classes.fixedLink} key="join">
+                  회원가입
+                  </Link>
+                </>
+                :<>
+                  <Link to="로그아웃" className={classes.fixedLink} key="login">
+                  로그아웃
+                  </Link>
+                  <Link to="마이페이지" className={classes.fixedLink} key="join">
+                  마이페이지
+                  </Link>
+                </>
+                }
                 </Toolbar>
             </AppBar>
     )
