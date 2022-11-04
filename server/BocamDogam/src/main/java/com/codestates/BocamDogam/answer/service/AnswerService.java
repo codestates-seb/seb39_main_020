@@ -8,13 +8,13 @@ public interface AnswerService {
 
     Answer createAnswer(Answer answer);
 
-    Answer updateAnswer(Answer answer);
+    Answer updateAnswer(Answer answer, String email);
 
     Answer findAnswer(Long answerId);
 
     Page<Answer> findAnswers(int page, int size);
 
-    void deleteAnswer(Long answerId);
+    void deleteAnswer(Long answerId, String email);
 
     Answer findVerifiedAnswer(Long answerId);
 

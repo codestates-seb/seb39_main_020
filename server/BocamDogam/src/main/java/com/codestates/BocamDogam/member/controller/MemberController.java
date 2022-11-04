@@ -11,6 +11,8 @@ import com.codestates.BocamDogam.member.service.MemberService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -77,12 +79,13 @@ public class MemberController {
     public ResponseEntity updateMember(@PathVariable("member-id") @Positive Long memberId,
                                        @RequestHeader(value = "Authorization") String token,
                                        @Valid @RequestBody MemberPatchDto requestBody) {
-        memberService.verifyWriterMember(token, memberId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) auth.getPrincipal();
         requestBody.setMemberId(memberId);
-        Member member = memberService.updateMember(memberMapper.memberPatchToMember(requestBody));
+        Member updatedMember = memberService.updateMember(memberMapper.memberPatchToMember(requestBody), member);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(memberMapper.memberToMemberResponse(member)),
+                new SingleResponseDto<>(memberMapper.memberToMemberResponse(updatedMember)),
                 HttpStatus.OK);
     }
 
@@ -90,8 +93,9 @@ public class MemberController {
     @DeleteMapping("/main/members/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive Long memberId,
                                        @RequestHeader(value = "Authorization") String token) {
-        memberService.verifyWriterMember(token, memberId);
-        memberService.deleteMember(memberId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) auth.getPrincipal();
+        memberService.deleteMember(memberId, member);
         return new ResponseEntity<>(
                 HttpStatus.NO_CONTENT);
     }

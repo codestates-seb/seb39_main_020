@@ -1,7 +1,6 @@
 package com.codestates.BocamDogam.post.controller;
 
 import com.codestates.BocamDogam.dto.MultiResponseDto;
-import com.codestates.BocamDogam.like.post_like.PostLikeService;
 import com.codestates.BocamDogam.member.entity.Member;
 import com.codestates.BocamDogam.member.service.MemberService;
 import com.codestates.BocamDogam.post.dto.PostDto;
@@ -10,17 +9,16 @@ import com.codestates.BocamDogam.post.mapper.PostMapper;
 import com.codestates.BocamDogam.post.repository.PostRepository;
 import com.codestates.BocamDogam.post.service.PostService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
 
-import java.util.Base64;
+
 import java.util.List;
 
 
@@ -28,7 +26,6 @@ import java.util.List;
 @RequestMapping("/main/community/board")
 @Validated
 public class PostController {
-
     private final PostService postService;
     private final MemberService memberService;
     private final PostRepository postRepository;
@@ -47,15 +44,9 @@ public class PostController {
                                    @RequestHeader(value = "Authorization") String token,
                                    @RequestBody PostDto.Post requestBody) {
 
-        Base64.Decoder decoder = Base64.getDecoder();
-        String[] splitJwt = token.split("\\.");
-        String payload = new String(decoder.decode(splitJwt[1]
-                        .replace("-", "+")
-                        .replace ("_", "/")));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        String email = new String(payload.substring(payload.indexOf("email") + 8, payload.indexOf("com")+3));
-
-        Member member = memberService.findMemberByEmail(email);
+        Member member = memberService.findMemberByEmail(auth.getPrincipal().toString());
 
         Post post = postMapper.postPostToPost(requestBody);
         post.setMember(member);
@@ -73,13 +64,11 @@ public class PostController {
                                     @RequestHeader(value = "Authorization") String token,
                                     @PathVariable("post-id") @Positive Long postId,
                                     @RequestBody PostDto.Patch requestBody) {
-        Post post = postService.findPost(postId);
-        Long writerId = post.getMember().getMemberId();
 
-        memberService.verifyWriterMember(token, writerId);
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getPrincipal().toString();
         requestBody.setPostId(postId);
-        Post patchedPost = postService.updatePost(postMapper.postPatchToPost(requestBody));
+        Post patchedPost = postService.updatePost(postMapper.postPatchToPost(requestBody), email);
 
         return new ResponseEntity<>(postMapper.postToPostResponse(patchedPost),
                 HttpStatus.CREATED);
@@ -120,9 +109,10 @@ public class PostController {
     public ResponseEntity deletePost(@PathVariable("board") Post.Board board,
                                     @PathVariable("post-id") @Positive Long postId,
                                     @RequestHeader(value = "Authorization") String token) {
-        memberService.verifyWriterMember(token, postService.findVerifiedPost(postId).getMember().getMemberId());
-
-        postService.deletePost(postId);
+//        memberService.verifyWriterMember(token, postService.findVerifiedPost(postId).getMember().getMemberId());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email =  auth.getPrincipal().toString();
+        postService.deletePost(postId, email);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

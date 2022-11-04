@@ -27,14 +27,17 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer updateAnswer(Answer answer) {
+    public Answer updateAnswer(Answer answer, String email) {
 
         Answer findAnswer = findVerifiedAnswer(answer.getAnswerId());
+        if(email.compareTo(findAnswer.getMember().getEmail())==0) {
+            Optional.ofNullable(answer.getContent())
+                    .ifPresent(content -> findAnswer.setContent(content));
 
-        Optional.ofNullable(answer.getContent())
-                .ifPresent(content -> findAnswer.setContent(content));
-
-        return answerRepository.save(findAnswer);
+            return answerRepository.save(findAnswer);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Override
@@ -50,9 +53,13 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public void deleteAnswer(Long answerId) {
+    public void deleteAnswer(Long answerId, String email) {
         Answer findAnswer = findVerifiedAnswer(answerId);
-        answerRepository.delete(findAnswer);
+        if(email.compareTo(findAnswer.getMember().getEmail())==0) {
+            answerRepository.delete(findAnswer);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Override

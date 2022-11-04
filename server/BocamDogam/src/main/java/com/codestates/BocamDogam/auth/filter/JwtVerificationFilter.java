@@ -2,7 +2,6 @@ package com.codestates.BocamDogam.auth.filter;
 
 import com.codestates.BocamDogam.auth.JwtTokenizer;
 import com.codestates.BocamDogam.auth.utils.CustomAuthorityUtils;
-import org.apache.catalina.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +29,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Map<String, Object> claims = verifyJws(request);
-        setAuthenticationToContext(claims);
+        try {
+            Map<String, Object> claims = verifyJws(request);
+            setAuthenticationToContext(claims);
+        } catch (SignatureException signatureException) {
+            request.setAttribute("올바른 서명이 아닙니다.", signatureException);
+        } catch (ExpiredJwtException expiredJwtException) {
+            request.setAttribute("만료된 토큰입니다.", expiredJwtException);
+        } catch (Exception exception) {
+            request.setAttribute("예외 발생", exception);
+        }
         filterChain.doFilter(request, response);
     }
 
@@ -47,7 +56,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String username = (String) claims.get("username");
+        String username = (String) claims.get("email");
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List) claims.get("roles"));
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);

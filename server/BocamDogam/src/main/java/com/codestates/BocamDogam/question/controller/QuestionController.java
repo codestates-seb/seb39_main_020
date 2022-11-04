@@ -14,6 +14,8 @@ import com.codestates.BocamDogam.question.service.QuestionService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,16 +46,8 @@ public class QuestionController {
     @PostMapping("/questions")
     public ResponseEntity postQuestion(@RequestHeader(value = "Authorization") String token,
                                    @RequestBody QuestionDto.Post requestBody) {
-
-        Base64.Decoder decoder = Base64.getDecoder();
-        String[] splitJwt = token.split("\\.");
-        String payload = new String(decoder.decode(splitJwt[1]
-                .replace("-", "+")
-                .replace ("_", "/")));
-
-        String email = new String(payload.substring(payload.indexOf("email") + 8, payload.indexOf("com")+3));
-
-        Member member = memberService.findMemberByEmail(email);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Member member = memberService.findMemberByEmail(auth.getPrincipal().toString());
 
         Question question = questionMapper.questionPostToQuestion(requestBody);
         question.setMember(member);
@@ -69,14 +63,11 @@ public class QuestionController {
     public ResponseEntity patchQuestion(@RequestHeader(value = "Authorization") String token,
                                     @PathVariable("question-id") @Positive Long questionId,
                                     @RequestBody QuestionDto.Patch requestBody) {
-        Question question = questionService.findQuestion(questionId);
-
-        Long writerId = question.getMember().getMemberId();
-
-        memberService.verifyWriterMember(token, writerId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getPrincipal().toString();
 
         requestBody.setQuestionId(questionId);
-        Question patchedQuestion = questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody));
+        Question patchedQuestion = questionService.updateQuestion(questionMapper.questionPatchToQuestion(requestBody), email);
 
         return new ResponseEntity<>(questionMapper.questionToQuestionResponse(patchedQuestion),
                 HttpStatus.CREATED);
@@ -106,9 +97,9 @@ public class QuestionController {
     @DeleteMapping("/questions/{question-id}")
     public ResponseEntity deleteQuestion(@PathVariable("question-id") @Positive Long questionId,
                                         @RequestHeader(value = "Authorization") String token) {
-        memberService.verifyWriterMember(token, questionService.findVerifiedQuestion(questionId).getMember().getMemberId());
-
-        questionService.deleteQuestion(questionId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getPrincipal().toString();
+        questionService.deleteQuestion(questionId, email);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

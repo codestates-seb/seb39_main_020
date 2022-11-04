@@ -3,8 +3,6 @@ package com.codestates.BocamDogam.member.service;
 import com.codestates.BocamDogam.member.entity.Member;
 import org.springframework.data.domain.Page;
 
-import java.util.Optional;
-
 public interface MemberService {
     // 회원 등록
     Member createMember(Member member);
@@ -16,10 +14,10 @@ public interface MemberService {
     Page<Member> findMembers(int page, int size);
 
     // 회원 정보 수정
-    Member updateMember(Member member);
+    Member updateMember(Member member, Member member1);
 
     // 회원 탈퇴
-    void deleteMember(Long memberId);
+    void deleteMember(Long memberId, Member member);
     
     // 이메일로 회원 확인
     Member findMemberByEmail(String email);

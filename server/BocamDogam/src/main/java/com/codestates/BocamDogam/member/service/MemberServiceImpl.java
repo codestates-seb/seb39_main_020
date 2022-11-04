@@ -56,19 +56,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 회원 정보 수정
-    public Member updateMember(Member member) {
-        Member findMember = findVerifiedMember(member.getMemberId());
+    public Member updateMember(Member requestMember, Member currentMember) {
+        if(requestMember == currentMember) {
+            Member findMember = findVerifiedMember(requestMember.getMemberId());
 
-        Optional.ofNullable(member.getNickname())
-                .ifPresent(nickname -> findMember.setNickname(nickname));
+            Optional.ofNullable(requestMember.getNickname())
+                    .ifPresent(nickname -> findMember.setNickname(nickname));
 
-        return memberRepository.save(findMember);
+            return memberRepository.save(findMember);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     // 회원 탈퇴
-    public void deleteMember(Long memberId) {
-        Member member = findVerifiedMember(memberId);
-        memberRepository.delete(member);
+    public void deleteMember(Long memberId, Member member) {
+        Member findMember = findVerifiedMember(memberId);
+        if (findMember == member) {
+            memberRepository.delete(findMember);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     // 이메일로 회원 확인
@@ -113,4 +121,5 @@ public class MemberServiceImpl implements MemberService {
 
 
     }
+
 }

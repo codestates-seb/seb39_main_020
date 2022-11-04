@@ -2,8 +2,6 @@ package com.codestates.BocamDogam.question.service;
 
 import com.codestates.BocamDogam.exception.BusinessLogicException;
 import com.codestates.BocamDogam.exception.ExceptionCode;
-import com.codestates.BocamDogam.post.entity.Post;
-import com.codestates.BocamDogam.post.repository.PostRepository;
 import com.codestates.BocamDogam.question.entity.Question;
 import com.codestates.BocamDogam.question.repository.QuestionRepository;
 import org.springframework.data.domain.Page;
@@ -28,15 +26,20 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question updateQuestion(Question question) {
+    public Question updateQuestion(Question question, String email) {
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
-        Optional.ofNullable(question.getTitle())
-                .ifPresent(title -> findQuestion.setTitle(title));
-        Optional.ofNullable(question.getContent())
-                .ifPresent(content -> findQuestion.setContent(content));
+        if(email.compareTo(findQuestion.getMember().getEmail()) == 0) {
 
-        return questionRepository.save(findQuestion);
+            Optional.ofNullable(question.getTitle())
+                    .ifPresent(title -> findQuestion.setTitle(title));
+            Optional.ofNullable(question.getContent())
+                    .ifPresent(content -> findQuestion.setContent(content));
+
+            return questionRepository.save(findQuestion);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Override
@@ -52,9 +55,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void deleteQuestion(Long questionId) {
+    public void deleteQuestion(Long questionId, String email) {
         Question findQuestion = findVerifiedQuestion(questionId);
-        questionRepository.delete(findQuestion);
+        if(email.compareTo(findQuestion.getMember().getEmail()) == 0) {
+            questionRepository.delete(findQuestion);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Override

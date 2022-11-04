@@ -8,13 +8,13 @@ public interface CommentService {
 
     Comment createComment(Comment comment);
 
-    Comment updateComment(Comment comment);
+    Comment updateComment(Comment comment, String email);
 
     Comment findComment(Long commentId);
 
     Page<Comment> findComments(int page, int size);
 
-    void deleteComment(Long commentId);
+    void deleteComment(Long commentId, String email);
 
     Comment findVerifiedComment(Long commentId);
 }

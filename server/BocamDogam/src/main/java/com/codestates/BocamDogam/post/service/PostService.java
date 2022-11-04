@@ -7,14 +7,14 @@ public interface PostService {
 
     Post createPost(Post post);
 
-    Post updatePost(Post post);
+    Post updatePost(Post post, String email);
 
     Post findPost(Long postId);
 
     Page<Post> findPosts(int page, int size, String boardName);
     Page<Post> findLikedPosts(String boardName);
 
-    void deletePost(Long postId);
+    void deletePost(Long postId, String member);
 
     Post findVerifiedPost(Long postId);
 }

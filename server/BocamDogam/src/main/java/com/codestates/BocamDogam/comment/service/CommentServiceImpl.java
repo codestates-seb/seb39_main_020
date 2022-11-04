@@ -27,13 +27,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateComment(Comment comment) {
+    public Comment updateComment(Comment comment, String email) {
 
         Comment findComment = findVerifiedComment(comment.getCommentId());
-        Optional.ofNullable(comment.getContent())
-                .ifPresent(content -> findComment.setContent(content));
+        if(email.compareTo(findComment.getMember().getEmail())==0) {
+            Optional.ofNullable(comment.getContent())
+                    .ifPresent(content -> findComment.setContent(content));
 
-        return commentRepository.save(findComment);
+            return commentRepository.save(findComment);
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Override
@@ -51,9 +55,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, String email) {
         Comment findComment = findVerifiedComment(commentId);
-        commentRepository.delete(findComment);
+        if(email.compareTo(findComment.getMember().getEmail())==0) {
+            commentRepository.delete(findComment);
+
+        } else {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_ALLOWED);
+        }
     }
 
     @Override
